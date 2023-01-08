@@ -1,7 +1,7 @@
-list            : $/martin/forms/models/record/columns.yaml
-modelClass      : Martin\Forms\Models\Record
-title           : martin.forms::lang.controllers.records.title
-recordUrl       : martin/forms/records/view/:id
+list            : $/publipresse/forms/models/record/columns.yaml
+modelClass      : Publipresse\Forms\Models\Record
+title           : publipresse.forms::lang.controllers.records.title
+recordUrl       : publipresse/forms/records/view/:id
 noRecordsMessage: backend::lang.list.no_records
 recordsPerPage  : 20
 showSetup       : true

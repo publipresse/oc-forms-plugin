@@ -1,16 +1,16 @@
 <?php
 
-namespace Martin\Forms\Components;
+namespace Publipresse\Forms\Components;
 
-use Martin\Forms\Classes\MagicForm;
+use Publipresse\Forms\Classes\MagicForm;
 
 class FilePondForm extends MagicForm
 {
     public function componentDetails()
     {
         return [
-            'name'        => 'martin.forms::lang.components.filepond_form.name',
-            'description' => 'martin.forms::lang.components.filepond_form.description',
+            'name'        => 'publipresse.forms::lang.components.filepond_form.name',
+            'description' => 'publipresse.forms::lang.components.filepond_form.description',
         ];
     }
 
@@ -18,23 +18,31 @@ class FilePondForm extends MagicForm
     {
         $local = [
             'mail_uploads' => [
-                'title'             => 'martin.forms::lang.components.shared.mail_uploads.title',
-                'description'       => 'martin.forms::lang.components.shared.mail_uploads.description',
+                'title'             => 'publipresse.forms::lang.components.shared.mail_uploads.title',
+                'description'       => 'publipresse.forms::lang.components.shared.mail_uploads.description',
                 'type'              => 'checkbox',
                 'default'           => false,
-                'group'             => 'martin.forms::lang.components.shared.group_mail',
+                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
                 'showExternalParam' => false
             ],
             'uploader_enable' => [
-                'title'             => 'martin.forms::lang.components.shared.uploader_enable.title',
-                'description'       => 'martin.forms::lang.components.shared.uploader_enable.description',
+                'title'             => 'publipresse.forms::lang.components.shared.uploader_enable.title',
+                'description'       => 'publipresse.forms::lang.components.shared.uploader_enable.description',
                 'default'           => false,
                 'type'              => 'checkbox',
-                'group'             => 'martin.forms::lang.components.shared.group_uploader',
+                'group'             => 'publipresse.forms::lang.components.shared.group_uploader',
                 'showExternalParam' => false,
             ],
         ];
 
         return array_merge(parent::defineProperties(), $local);
+    }
+
+    public function onRun() {
+        parent::onRun();
+        $this->addCss('assets/vendor/filepond/filepond.css');
+        $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-type.js', ['defer' => true]);
+        $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-size.js', ['defer' => true]);
+        $this->addJs('assets/vendor/filepond/filepond.js', ['defer' => true]);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Martin\Forms\Classes;
+namespace Publipresse\Forms\Classes;
 
-use Martin\Forms\Models\Record;
+use Publipresse\Forms\Models\Record;
 
 class UnreadRecords
 {

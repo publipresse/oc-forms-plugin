@@ -1,6 +1,6 @@
 <?php
 
-namespace Martin\Forms\Classes;
+namespace Publipresse\Forms\Classes;
 
 use Backend;
 use BackendAuth;
@@ -33,7 +33,7 @@ class BackendHelpers
      */
     public static function isTranslatePlugin(): bool
     {
-        return class_exists('\RainLab\Translate\Classes\Translator') && class_exists('\RainLab\Translate\Models\Message');
+        return class_exists('\RainLab\Translate\Classes\Translator') && class_exists('\RainLab\Translate\Models\Message') && class_exists('\RainLab\Translate\Models\Locale');
     }
 
     /**

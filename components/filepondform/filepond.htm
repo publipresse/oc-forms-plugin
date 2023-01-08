@@ -1,0 +1,53 @@
+{% put scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const inputElement = document.querySelector('input[type="file"]');
+
+        FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+        const pond = FilePond.create(inputElement, {
+            onaddfilestart: (file) => { isLoadingCheck(); },
+            onprocessfile: (files) => { isLoadingCheck(); },
+            onremovefile: (files) => { isLoadingCheck(); },
+            onupdatefiles: (files) => { isLoadingCheck(); },
+            allowFileSizeValidation: true,
+            maxFileSize: '{{ allowed_filesize }}KB',
+        });
+
+        FilePond.setOptions({
+            name: 'files[]',
+            server: {
+                url: '/publipresse/forms',
+                process: '/process',
+                revert: '/process',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ form_token() }}',
+                    'FILEPOND-FIELD': pond.name
+                }
+            }
+        });
+
+        function isLoadingCheck() {
+            const isLoading = pond.getFiles().filter(x => x.status !== 5).length !== 0;
+            const submitButtons = document.querySelectorAll('form [type="submit"]');
+
+            if (isLoading) {
+                submitButtons.forEach(function(button) {
+                    button.setAttribute("disabled", "disabled");
+                });
+            } else {
+                submitButtons.forEach(function(button) {
+                    button.removeAttribute("disabled");
+                });
+            }
+        }
+    })
+</script>
+{% endput %}
+
+<style>
+.filepond--root {
+    font-size: 1.2rem;
+}
+</style>

@@ -1,11 +1,11 @@
 <?php
 
-namespace Martin\Forms\Classes\Mails;
+namespace Publipresse\Forms\Classes\Mails;
 
-use Martin\Forms\Models\Record;
+use Publipresse\Forms\Models\Record;
 use System\Models\MailTemplate;
-use Winter\Storm\Support\Facades\Mail;
-use Martin\Forms\Classes\BackendHelpers;
+use October\Rain\Support\Facades\Mail;
+use Publipresse\Forms\Classes\BackendHelpers;
 
 class AutoResponse implements Mailable
 {
@@ -67,7 +67,7 @@ class AutoResponse implements Mailable
     {
         return !empty($this->properties['mail_resp_template']) && MailTemplate::findOrMakeTemplate($this->properties['mail_resp_template']) ?
             $this->properties['mail_resp_template'] :
-            'martin.forms::mail.autoresponse';
+            'publipresse.forms::mail.autoresponse';
     }
 
     /**

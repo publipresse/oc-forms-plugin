@@ -1,15 +1,15 @@
 <?php
 
-namespace Martin\Forms\Models;
+namespace Publipresse\Forms\Models;
 
-use Winter\Storm\Database\Model;
+use October\Rain\Database\Model;
 
 class Settings extends Model
 {
-    use \Winter\Storm\Database\Traits\Validation;
+    use \October\Rain\Database\Traits\Validation;
 
     public $implement      = ['System.Behaviors.SettingsModel'];
-    public $settingsCode   = 'martin_forms_settings';
+    public $settingsCode   = 'publipresse_forms_settings';
     public $settingsFields = 'fields.yaml';
 
     public $rules = [

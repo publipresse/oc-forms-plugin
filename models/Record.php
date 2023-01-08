@@ -1,15 +1,15 @@
 <?php
 
-namespace Martin\Forms\Models;
+namespace Publipresse\Forms\Models;
 
 use Backend\Facades\Backend;
-use Winter\Storm\Database\Model;
+use October\Rain\Database\Model;
 
 class Record extends Model
 {
-    use \Winter\Storm\Database\Traits\SoftDelete;
+    use \October\Rain\Database\Traits\SoftDelete;
 
-    public $table = 'martin_forms_records';
+    public $table = 'publipresse_forms_records';
 
     protected $dates = ['deleted_at'];
 
@@ -35,7 +35,7 @@ class Record extends Model
     public function filesList()
     {
         return $this->files->map(function ($file) {
-            return Backend::url('martin/forms/records/download', [$this->id, $file->id]);
+            return Backend::url('publipresse/forms/records/download', [$this->id, $file->id]);
         })->implode(',');
     }
 }

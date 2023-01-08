@@ -48,8 +48,7 @@
         <h4>Upload your resume</h4>
         <input type="file" name="files" multiple>
     </div>
-
-    <hr>
+    {% partial '@filepond' %}
 {% endif %}
 
     <div class="form-group">
@@ -60,4 +59,3 @@
 
 {{ form_close() }}
 
-{% partial '@filepond' %}

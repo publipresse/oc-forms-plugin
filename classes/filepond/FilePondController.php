@@ -1,12 +1,12 @@
 <?php
 
-namespace Martin\Forms\Classes\FilePond;
+namespace Publipresse\Forms\Classes\FilePond;
 
 use Illuminate\Http\Request;
-use Martin\Forms\Models\Settings;
+use Publipresse\Forms\Models\Settings;
 use Illuminate\Support\Facades\Response;
-use Winter\Storm\Filesystem\Definitions;
-use Winter\Storm\Support\Facades\Validator;
+use October\Rain\Filesystem\Definitions;
+use October\Rain\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 
 class FilePondController extends BaseController
@@ -39,10 +39,9 @@ class FilePondController extends BaseController
         $input = $request->file($field);
         $this->file = is_array($input) ? $input[0] : $input;
 
-
         /** VALIDATE UPLOAD FILE SIZE */
         if ($this->checkInvalidSize()) {
-            $error = e(trans('martin.forms::lang.classes.FilePond.error_filesize'));
+            $error = e(trans('publipresse.forms::lang.classes.FilePond.error_filesize'));
             return Response::make($error, 422, [
                 'Content-Type' => 'text/plain',
             ]);
@@ -50,7 +49,7 @@ class FilePondController extends BaseController
 
         /** VALIDATE UPLOAD FILE TYPE */
         if ($this->checkInvalidFile()) {
-            $error = e(trans('martin.forms::lang.classes.FilePond.error_filetype'));
+            $error = e(trans('publipresse.forms::lang.classes.FilePond.error_filetype'));
             return Response::make($error, 422, [
                 'Content-Type' => 'text/plain',
             ]);
@@ -66,7 +65,7 @@ class FilePondController extends BaseController
         $filePathParts = pathinfo($filePath);
 
         if (!$this->file->move($filePathParts['dirname'], $filePathParts['basename'])) {
-            $error = e(trans('martin.forms::lang.classes.FilePond.error_savefile'));
+            $error = e(trans('publipresse.forms::lang.classes.FilePond.error_savefile'));
             return Response::make($error, 500, [
                 'Content-Type' => 'text/plain',
             ]);

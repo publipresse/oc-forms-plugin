@@ -1,8 +1,9 @@
 var captchas = [];
 
 var onloadCallback = function() {
-    jQuery('.g-recaptcha').each(function(index, el) {
-        captchas[el.id] = grecaptcha.render(el, $(el).data());
+    var recaptchas = document.querySelectorAll('.g-recaptcha');
+    recaptchas.forEach(function(recaptcha) {
+        captchas[recaptcha.id] = grecaptcha.render(recaptcha, recaptcha.dataset);
     });
 }
 

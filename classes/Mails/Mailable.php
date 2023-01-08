@@ -1,6 +1,6 @@
 <?php
 
-namespace Martin\Forms\Classes\Mails;
+namespace Publipresse\Forms\Classes\Mails;
 
 interface Mailable
 {

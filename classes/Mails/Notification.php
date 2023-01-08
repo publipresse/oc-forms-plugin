@@ -1,12 +1,12 @@
 <?php
 
-namespace Martin\Forms\Classes\Mails;
+namespace Publipresse\Forms\Classes\Mails;
 
-use Martin\Forms\Models\Record;
+use Publipresse\Forms\Models\Record;
 use System\Models\MailTemplate;
-use Winter\Storm\Database\Collection;
-use Winter\Storm\Support\Facades\Mail;
-use Martin\Forms\Classes\BackendHelpers as BH;
+use October\Rain\Database\Collection;
+use October\Rain\Support\Facades\Mail;
+use Publipresse\Forms\Classes\BackendHelpers as BH;
 
 class Notification implements Mailable
 {
@@ -97,7 +97,7 @@ class Notification implements Mailable
     {
         return !empty($this->properties['mail_template']) && MailTemplate::findOrMakeTemplate($this->properties['mail_template']) ?
             $this->properties['mail_template'] :
-            'martin.forms::mail.notification';
+            'publipresse.forms::mail.notification';
     }
 
     public function prepareCustomSubject()

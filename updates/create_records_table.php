@@ -1,20 +1,22 @@
 <?php
 
-namespace Martin\Forms\Updates;
+namespace Publipresse\Forms\Updates;
 
-use Winter\Storm\Support\Facades\Schema;
-use Winter\Storm\Database\Schema\Blueprint;
-use Winter\Storm\Database\Updates\Migration;
+use October\Rain\Support\Facades\Schema;
+use October\Rain\Database\Schema\Blueprint;
+use October\Rain\Database\Updates\Migration;
 
 class CreateRecordsTable extends Migration
 {
     public function up()
     {
-        Schema::create('martin_forms_records', function (Blueprint $table) {
+        Schema::create('publipresse_forms_records', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
+            $table->string('group')->default('(Empty)');
             $table->text('form_data')->nullable();
             $table->string('ip')->nullable();
+            $table->boolean('unread')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -22,6 +24,6 @@ class CreateRecordsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('martin_forms_records');
+        Schema::dropIfExists('publipresse_forms_records');
     }
 }

@@ -1,15 +1,15 @@
 <?php
 
-    namespace Martin\Forms\Components;
+    namespace Publipresse\Forms\Components;
 
-    use Martin\Forms\Classes\MagicForm;
+    use Publipresse\Forms\Classes\MagicForm;
 
     class EmptyForm extends MagicForm {
 
         public function componentDetails() {
             return [
-                'name'        => 'martin.forms::lang.components.empty_form.name',
-                'description' => 'martin.forms::lang.components.empty_form.description',
+                'name'        => 'publipresse.forms::lang.components.empty_form.name',
+                'description' => 'publipresse.forms::lang.components.empty_form.description',
             ];
         }
 

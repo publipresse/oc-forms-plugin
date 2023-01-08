@@ -1,6 +1,6 @@
 <?php
 
-namespace Martin\Forms\Classes\FilePond;
+namespace Publipresse\Forms\Classes\FilePond;
 
 use Throwable;
 

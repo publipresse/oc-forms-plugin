@@ -1,30 +1,30 @@
 <?php
 
-namespace Martin\Forms\Classes;
+namespace Publipresse\Forms\Classes;
 
 use Cms\Classes\ComponentBase;
-use Martin\Forms\Models\Record;
-use Martin\Forms\Models\Settings;
+use Publipresse\Forms\Models\Record;
+use Publipresse\Forms\Models\Settings;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-use Martin\Forms\Classes\BackendHelpers;
-use Winter\Storm\Support\Facades\Config;
-use Winter\Storm\Exception\AjaxException;
-use Martin\Forms\Classes\FilePond\FilePond;
-use Winter\Storm\Support\Facades\Validator;
-use Martin\Forms\Classes\Mails\AutoResponse;
-use Martin\Forms\Classes\Mails\Notification;
-use Winter\Storm\Exception\ValidationException;
+use Publipresse\Forms\Classes\BackendHelpers;
+use October\Rain\Support\Facades\Config;
+use October\Rain\Exception\AjaxException;
+use Publipresse\Forms\Classes\FilePond\FilePond;
+use October\Rain\Support\Facades\Validator;
+use Publipresse\Forms\Classes\Mails\AutoResponse;
+use Publipresse\Forms\Classes\Mails\Notification;
+use October\Rain\Exception\ValidationException;
 
 abstract class MagicForm extends ComponentBase
 {
 
-    use \Martin\Forms\Classes\ReCaptcha;
-    use \Martin\Forms\Classes\SharedProperties;
+    use \Publipresse\Forms\Classes\ReCaptcha;
+    use \Publipresse\Forms\Classes\SharedProperties;
 
     public function onRun()
     {
@@ -40,12 +40,9 @@ abstract class MagicForm extends ComponentBase
         }
 
         if ($this->isReCaptchaMisconfigured()) {
-            $this->page['recaptcha_warn'] = Lang::get('martin.forms::lang.components.shared.recaptcha_warn');
+            $this->page['recaptcha_warn'] = Lang::get('publipresse.forms::lang.components.shared.recaptcha_warn');
         }
 
-        if ($this->property('inline_errors') == 'display') {
-            $this->addJs('assets/js/inline-errors.js');
-        }
     }
 
     public function settings()
@@ -66,7 +63,7 @@ abstract class MagicForm extends ComponentBase
             throw new AjaxException(['#' . $this->alias . '_forms_flash' => $this->renderPartial($flash_partial, [
                 'status'  => 'error',
                 'type'    => 'danger',
-                'content' => Lang::get('martin.forms::lang.components.shared.csrf_error'),
+                'content' => Lang::get('publipresse.forms::lang.components.shared.csrf_error'),
             ])]);
         }
 
@@ -156,7 +153,7 @@ abstract class MagicForm extends ComponentBase
 
             // PREPARE RECAPTCHA VALIDATION
             $rules   = ['g-recaptcha-response'           => 'recaptcha'];
-            $err_msg = ['g-recaptcha-response.recaptcha' => Lang::get('martin.forms::lang.validation.recaptcha_error')];
+            $err_msg = ['g-recaptcha-response.recaptcha' => Lang::get('publipresse.forms::lang.validation.recaptcha_error')];
 
             // DO SECOND VALIDATION
             $validator = Validator::make($post, $rules, $err_msg);
@@ -171,7 +168,7 @@ abstract class MagicForm extends ComponentBase
                     throw new AjaxException($this->exceptionResponse($validator, [
                         'status'  => 'error',
                         'type'    => 'danger',
-                        'content' => Lang::get('martin.forms::lang.validation.recaptcha_error'),
+                        'content' => Lang::get('publipresse.forms::lang.validation.recaptcha_error'),
                         'errors'  => json_encode($validator->messages()->messages()),
                         'jscript' => $this->property('js_on_error'),
                     ]));
@@ -183,7 +180,7 @@ abstract class MagicForm extends ComponentBase
         unset($post['_token'], $post['g-recaptcha-response'], $post['_session_key'], $post['files']);
 
         // FIRE BEFORE SAVE EVENT
-        Event::fire('martin.forms.beforeSaveRecord', [&$post, $this]);
+        Event::fire('publipresse.forms.beforeSaveRecord', [&$post, $this]);
 
         if (count($custom_attributes)) {
             $post = collect($post)->mapWithKeys(function ($val, $key) use ($custom_attributes) {
@@ -225,7 +222,7 @@ abstract class MagicForm extends ComponentBase
         }
 
         // FIRE AFTER SAVE EVENT
-        Event::fire('martin.forms.afterSaveRecord', [&$post, $this, $record]);
+        Event::fire('publipresse.forms.afterSaveRecord', [&$post, $this, $record]);
 
         // CHECK FOR REDIRECT
         if ($this->property('redirect')) {

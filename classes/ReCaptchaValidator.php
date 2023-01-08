@@ -1,9 +1,9 @@
 <?php
 
-namespace Martin\Forms\Classes;
+namespace Publipresse\Forms\Classes;
 
 use Request;
-use Martin\Forms\Models\Settings;
+use Publipresse\Forms\Models\Settings;
 
 class ReCaptchaValidator
 {
