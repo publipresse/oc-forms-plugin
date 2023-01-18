@@ -8,7 +8,7 @@ var onloadCallback = function() {
             grecaptcha.render(el, { 
                 callback: function(token) { 
                     oc.request(form, 'onFormSubmit', {
-                        complete: function(data) {
+                        error: function(data) {
                             resetReCaptcha(form);
                         }
                     });
