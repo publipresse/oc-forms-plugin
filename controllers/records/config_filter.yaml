@@ -1,13 +1,13 @@
 scopes:
 
     group:
-        label     : publipresse.forms::lang.controllers.records.columns.group
-        type      : group
+        label: Groups
+        type: group
         modelClass: Publipresse\Forms\Models\Record
-        options   : filterGroups
+        options: filterGroups
         conditions: "`group` in (:filtered)"
 
     created_at:
-        label     : publipresse.forms::lang.controllers.records.columns.created_at
-        type      : daterange
+        label: Created at
+        type: daterange
         conditions: created_at >= ':after' AND created_at <= ':before'

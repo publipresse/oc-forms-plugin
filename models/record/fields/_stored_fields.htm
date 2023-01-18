@@ -1,1 +1,7 @@
-<?php echo implode(', ', array_keys($record->form_data_arr)) ?>
+<?php if($column->columnName == 'form_data_summary'): ?>
+    <?php echo implode(', ', array_keys($value, true)) ?>
+<?php elseif($column->columnName == 'form_data_details'): ?>
+    <?php foreach($value as $key => $data): ?>
+        <?= $key ?> : <?= $data ?><br />
+    <?php endforeach; ?>
+<?php endif; ?>

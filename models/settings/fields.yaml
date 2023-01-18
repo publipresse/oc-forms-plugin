@@ -1,77 +1,44 @@
 tabs:
     fields:
 
-        plugin_help:
-            type   : partial
-            path   : $/publipresse/forms/models/settings/_plugin_help.htm
-            tab    : publipresse.forms::lang.settings.tabs.general
-
-        section_ui:
-            label   : UI
-            type    : section
-            comment : Settings related to plugin user inferface
-            tab     : publipresse.forms::lang.settings.tabs.general
-            cssClass: m-t
-
-        global_hide_button:
-            label  : publipresse.forms::lang.settings.global_hide_button
-            comment: publipresse.forms::lang.settings.global_hide_button_desc
-            type   : switch
-            default: false
-            tab    : publipresse.forms::lang.settings.tabs.general
-
-        section_uploads:
-            label   : File uploads
-            type    : section
-            comment : Settings related to file uploads through components
-            tab     : publipresse.forms::lang.settings.tabs.general
-            cssClass: m-t-lg
-
-        global_allowed_filesize:
-            label       : Max upload size (in kilobytes)
-            type        : number
-            default     : 10000
-            tab         : publipresse.forms::lang.settings.tabs.general
-            span        : left
-
-        global_allowed_files:
-            label       : Allowed file formats
-            type        : taglist
-            default     : jpg,jpeg,bmp,png,webp,gif,js,ico,css,ics,odt,doc,docx,ppt,pptx,pdf,txt,xml,ods,xls,xlsx,ttf,flv,wmv,mp3,ogg,wav,avi,mov,mp4,mpeg,webm,mkv,rar,xml,zip
-            tab         : publipresse.forms::lang.settings.tabs.general
-            span        : right
-
-        recaptcha_help:
-            type   : partial
-            path   : $/publipresse/forms/models/settings/_recaptcha_help.htm
-            tab    : publipresse.forms::lang.settings.tabs.recaptcha
+        _recaptcha_help:
+            type: hint
+            mode: info
+            label: How to configure
+            tab: reCAPTCHA
+            comment: |
+                * Go to https://www.google.com/recaptcha/admin
+                * Register a new site, set Label and Domains
+                * Copy/paste "Site key" & "Secret key"
 
         recaptcha_site_key:
-            label: publipresse.forms::lang.settings.recaptcha_site_key
-            span : left
-            tab  : publipresse.forms::lang.settings.tabs.recaptcha
+            label: Site key
+            span: left
+            tab: reCAPTCHA
 
         recaptcha_secret_key:
-            label: publipresse.forms::lang.settings.recaptcha_secret_key
-            span : right
-            tab  : publipresse.forms::lang.settings.tabs.recaptcha
+            label: Secret key
+            span: right
+            tab: reCAPTCHA
 
-        gdpr_help:
-            type   : partial
-            path   : $/publipresse/forms/models/settings/_gdpr_help.htm
-            tab    : publipresse.forms::lang.settings.tabs.gdpr
+        _gdpr_help:
+            type: hint
+            mode: info
+            label: Information
+            tab: Gdpr
+            comment: New GDPR law in Europe, you can't keep records undefinitely, need to clear them after a certain period of time depending on your needs
 
         gdpr_enable:
-            label  : publipresse.forms::lang.settings.gdpr_enable
-            type   : switch
+            label: Enable Gdpr
+            type: switch
             default: false
-            tab    : publipresse.forms::lang.settings.tabs.gdpr
+            tab: Gdpr
 
         gdpr_days:
-            label  : publipresse.forms::lang.settings.gdpr_days
-            span   : left
+            label: Keep records for a maximum of X days
+            span: left
             default: 120
-            tab    : publipresse.forms::lang.settings.tabs.gdpr
+            tab: Gdpr
             trigger:
                 action: show
                 field: gdpr_enable

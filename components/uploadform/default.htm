@@ -1,0 +1,46 @@
+{{ form_ajax(__SELF__ ~ '::onFormSubmit', validate: true, files: true) }}
+
+    <div class="mb-3">
+        <label class="form-label" class="form-label" for="name">Name</label>
+        <input class="form-control" type="text" id="name" name="name">
+        <div data-validate-for="name"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" type="text" id="email" name="email">
+        <div data-validate-for="email"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="position">Position</label>
+        <select class="form-select" id="position" name="position">
+            <option value=""></option>
+            <option value="Lead">Lead</option>
+            <option value="Senior">Senior</option>
+            <option value="Direct">Direct</option>
+            <option value="Corporate">Corporate</option>
+            <option value="Dynamic">Dynamic</option>
+        </select>
+        <div data-validate-for="position"></div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="skills">Skills</label>
+        <textarea class="form-control" id="skills" name="skills" rows="8" placeholder="Summary of skills"></textarea>
+        <div data-validate-for="skills"></div>
+    </div>
+
+
+    {% partial '@filepond' %}
+
+    <div class="mb-3">
+        {% partial '@recaptcha' %}
+    </div>
+
+    {{ form_submit() }}
+
+    <div id="{{ __SELF__ }}_forms_flash"></div>
+
+{{ form_close() }}
+

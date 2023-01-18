@@ -27,7 +27,7 @@ class Exports extends Controller
 
     public function index()
     {
-        $this->pageTitle = e(trans('publipresse.forms::lang.controllers.exports.title'));
+        $this->pageTitle = __('Export Records');
         $this->create('frontend');
     }
 
@@ -75,10 +75,10 @@ class Exports extends Controller
         // METADATA HEADERS
         if (post('Record.options_metadata')) {
             $meta_headers = [
-                e(trans('publipresse.forms::lang.controllers.records.columns.id')),
-                e(trans('publipresse.forms::lang.controllers.records.columns.group')),
-                e(trans('publipresse.forms::lang.controllers.records.columns.ip')),
-                e(trans('publipresse.forms::lang.controllers.records.columns.created_at')),
+                __('Record ID'),
+                __('Group'),
+                __('IP Address'),
+                __('Created at'),
             ];
             $headers = array_merge($meta_headers, $headers);
         }
@@ -90,7 +90,7 @@ class Exports extends Controller
 
         // ADD FILES HEADER
         if (post('Record.options_files')) {
-            $headers[] = e(trans('publipresse.forms::lang.controllers.records.columns.files'));
+            $headers[] = __('Attached Files');
         }
 
         // ADD HEADERS

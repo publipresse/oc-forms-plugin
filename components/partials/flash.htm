@@ -1,33 +1,47 @@
-{% spaceless %}
 
-    <div class="alert alert-{{ type }} alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+{% if __SELF__.property('feedback_mode') == 'flash' %}
+    <div class="alert alert-{{ type }}">
+        <button type="button" class="alert-close" onclick="this.parentElement.remove()">✖</button>
 
-    {% if title %}
-        <h4>{{ title }}</h4>
-    {% endif %}
+        {% if title %}
+            <h4>{{ title }}</h4>
+        {% endif %}
 
-    {% if content %}
-        <p>{{ content }}</p>
-    {% endif %}
+        {% if content %}
+            <p>{{ content }}</p>
+        {% endif %}
 
-    {% if list %}
-        <ul>
-        {% for item in list %}
-            <li>{{ item }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-
+        {% if list %}
+            <ul>
+                {% for item in list %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
+{% endif %}
 
-    {% if jscript %}
-        <script>
-            {% if errors %}
-                var errors = JSON.parse('{{ errors|raw }}');
+<script>
+    {% if status == 'success' %}
+        var form = document.querySelector('[data-request="{{ __SELF__.alias }}::onFormSubmit"]');
+
+        // Reset form
+        {% if __SELF__.property('reset_form') %}
+            {% if __SELF__.property('uploader_enable') %}
+                pond.removeFile();
             {% endif %}
-            {{ jscript|raw }}
-        </script>
+            form.reset();
+        {% endif %}
+        
     {% endif %}
 
-{% endspaceless %}
+    // Display errors in a JS objects
+    {% if jerrors %}
+        var jerrors = JSON.parse('{{ jerrors|raw }}');
+    {% endif %}
+
+    // Display Js on success and JS on error scripts
+    {% if jscript %}
+        {{ jscript|raw }}
+    {% endif %}
+</script>

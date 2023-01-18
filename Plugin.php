@@ -2,114 +2,118 @@
 
 namespace Publipresse\Forms;
 
-use Backend\Facades\Backend;
-use Publipresse\Forms\Classes\GDPR;
-use System\Classes\PluginBase;
-use Publipresse\Forms\Models\Settings;
-use System\Classes\SettingsManager;
-use Illuminate\Support\Facades\Lang;
-use Publipresse\Forms\Classes\UnreadRecords;
+use Lang;
+use Validator;
+
 use Publipresse\Forms\Classes\BackendHelpers;
-use October\Rain\Support\Facades\Validator;
+use Publipresse\Forms\Models\Settings;
+use Publipresse\Forms\Models\Record;
+
+use Backend\Facades\Backend;
+use System\Classes\PluginBase;
+use System\Classes\SettingsManager;
+
 
 class Plugin extends PluginBase
 {
-    public function pluginDetails()
-    {
+    public function pluginDetails() {
         return [
-            'name'        => 'publipresse.forms::lang.plugin.name',
-            'description' => 'publipresse.forms::lang.plugin.description',
-            'author'      => 'Publipresse M.',
-            'icon'        => 'icon-bolt',
-            'homepage'    => 'https://github.com/skydiver/'
+            'name' => __('Magic forms'),
+            'description' => __('Create easy ajax forms'),
+            'author' => 'Publipresse',
+            'icon' => 'icon-bolt',
+            'homepage' => 'https://github.com/publipresse/oc-forms-plugin'
         ];
     }
 
-    public function registerNavigation()
-    {
-        if (Settings::get('global_hide_button', false)) {
-            return;
-        }
+    public function registerNavigation() {
 
-        return [
+        // Add menu item for all records
+        $menu = [
             'forms' => [
-                'label'       => 'publipresse.forms::lang.menu.label',
-                'icon'        => 'icon-bolt',
-                'url'         => BackendHelpers::getBackendURL(['publipresse.forms.access_records' => 'publipresse/forms/records', 'publipresse.forms.access_exports' => 'publipresse/forms/exports'], 'publipresse.forms.access_records'),
+                'label' => __('Forms'),
+                'icon' => 'icon-bolt',
+                'url' => BackendHelpers::getBackendURL(['publipresse.forms.access_records' => 'publipresse/forms/records', 'publipresse.forms.access_exports' => 'publipresse/forms/exports'], 'publipresse.forms.access_records'),
                 'permissions' => ['publipresse.forms.*'],
+                'counter' => Record::getUnread(),
+                'counterLabel' => __('Unread messages'),
                 'sideMenu' => [
                     'records' => [
-                        'label'        => 'publipresse.forms::lang.menu.records.label',
-                        'icon'         => 'icon-database',
-                        'url'          => Backend::url('publipresse/forms/records'),
-                        'permissions'  => ['publipresse.forms.access_records'],
-                        'counter'      => UnreadRecords::getTotal(),
-                        'counterLabel' => 'Un-Read Messages'
-                    ],
-                    'exports' => [
-                        'label'       => 'publipresse.forms::lang.menu.exports.label',
-                        'icon'        => 'icon-download',
-                        'url'         => Backend::url('publipresse/forms/exports'),
-                        'permissions' => ['publipresse.forms.access_exports']
+                        'label' => __('All records'),
+                        'icon' => 'icon-database',
+                        'url' => Backend::url('publipresse/forms/records'),
+                        'permissions' => ['publipresse.forms.access_records'],
+                        'counter' => Record::getUnread(),
+                        'counterLabel' => __('Unread messages'),
                     ],
                 ]
             ]
         ];
+        
+        // Add menu item for each groups
+        $groups = Record::all()->pluck('group')->unique();
+        foreach($groups as $group) {
+            $slug = str_slug($group);
+            $menu['forms']['sideMenu'][$slug] = [
+                'label' => $group,
+                'icon' => 'icon-database',
+                'url' => Backend::url('publipresse/forms/records?group='.$group),
+                'permissions' => ['publipresse.forms.access_records'],
+                'counter' => Record::getUnread($group),
+                'counterLabel' => __('Unread messages'),
+            ];
+        }
+
+        // Add menu item to export datas
+        $menu['forms']['sideMenu']['exports'] = [
+            'label' => __('Export'),
+            'icon' => 'icon-download',
+            'url' => Backend::url('publipresse/forms/exports'),
+            'permissions' => ['publipresse.forms.access_exports']
+        ];
+        return $menu;
     }
 
-    public function registerSettings()
-    {
+    public function registerSettings() {
         return [
             'config' => [
-                'label'       => 'publipresse.forms::lang.menu.label',
-                'description' => 'publipresse.forms::lang.menu.settings',
-                'category'    => SettingsManager::CATEGORY_CMS,
-                'icon'        => 'icon-bolt',
-                'class'       => 'Publipresse\Forms\Models\Settings',
+                'label' => __('Magic forms'),
+                'description' => __('Configure magic forms parameters'),
+                'category' => SettingsManager::CATEGORY_CMS,
+                'icon' => 'icon-bolt',
+                'class' => 'Publipresse\Forms\Models\Settings',
                 'permissions' => ['publipresse.forms.access_settings'],
-                'order'       => 500
+                'order' => 500
             ]
         ];
     }
 
-    public function registerPermissions()
-    {
+    public function registerPermissions() {
         return [
-            'publipresse.forms.access_settings' => ['tab' => 'publipresse.forms::lang.permissions.tab', 'label' => 'publipresse.forms::lang.permissions.access_settings'],
-            'publipresse.forms.access_records'  => ['tab' => 'publipresse.forms::lang.permissions.tab', 'label' => 'publipresse.forms::lang.permissions.access_records'],
-            'publipresse.forms.access_exports'  => ['tab' => 'publipresse.forms::lang.permissions.tab', 'label' => 'publipresse.forms::lang.permissions.access_exports'],
-            'publipresse.forms.gdpr_cleanup'    => ['tab' => 'publipresse.forms::lang.permissions.tab', 'label' => 'publipresse.forms::lang.permissions.gdpr_cleanup'],
+            'publipresse.forms.access_settings' => ['tab' => __('Magic forms'), 'label' => __('Access settings')],
+            'publipresse.forms.access_records' => ['tab' => __('Magic forms'), 'label' => __('Access records')],
+            'publipresse.forms.access_exports' => ['tab' => __('Magic forms'), 'label' => __('Can export records')],
+            'publipresse.forms.gdpr_cleanup' => ['tab' => __('Magic forms'), 'label' => __('Gdpr cleanup')],
         ];
     }
 
-    public function registerComponents()
-    {
+    public function registerComponents() {
         return [
-            'Publipresse\Forms\Components\GenericForm'  => 'genericForm',
-            'Publipresse\Forms\Components\FilePondForm' => 'filepondForm',
-            'Publipresse\Forms\Components\EmptyForm'    => 'emptyForm',
+            'Publipresse\Forms\Components\UploadForm' => 'uploadForm',
         ];
     }
 
-    public function registerMailTemplates()
-    {
+    public function registerMailTemplates() {
         return [
-            'publipresse.forms::mail.notification' => Lang::get('publipresse.forms::lang.mails.form_notification.description'),
-            'publipresse.forms::mail.autoresponse' => Lang::get('publipresse.forms::lang.mails.form_autoresponse.description'),
+            'publipresse.forms::mail.notification' => __('Form submission notification'),
+            'publipresse.forms::mail.autoresponse' => __('Form submission auto-response'),
         ];
     }
 
-    public function register()
-    {
-        $this->app->resolving('validator', function () {
-            Validator::extend('recaptcha', 'Publipresse\Forms\Classes\ReCaptchaValidator@validateReCaptcha');
-        });
-    }
-
-    public function registerSchedule($schedule)
-    {
+    public function registerSchedule($schedule) {
         $schedule->call(function () {
-            GDPR::cleanRecords();
+            MagicForm::gdprClean();
         })->daily();
     }
+    
 }

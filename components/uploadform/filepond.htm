@@ -1,0 +1,48 @@
+{% if __SELF__.property('uploader_enable') %}
+
+    <input name="files[]" type="file" multiple>
+    
+    {% put scripts %}
+    <script>
+        
+        var pond;
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputElement = document.querySelector('[data-request="{{ __SELF__.alias }}::onFormSubmit"] input[type="file"]');
+
+            FilePond.registerPlugin(FilePondPluginFileValidateType);
+            FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+            pond = FilePond.create(inputElement, {
+                onwarning: (status, files) => { alert('{{ "The maximum number of file is"|trans }} {{ max_files }}') },
+                
+                maxFiles: '{{ max_files }}',
+                storeAsFile: true,
+                allowReorder: true,
+                //checkValidity: true,
+                credits: null,
+                
+                // Labels
+                labelIdle: '{{ "Drag & Drop your files or"|trans }} <span class="filepond--label-action">{{ "Browse"|trans }}</span>',
+                labelInvalidField: '{{ "Field contains invalid files"|trans }}',
+
+                // File types validation
+                allowFileTypeValidation: true,
+                acceptedFileTypes: {{ allowed_filetypes|keys|json_encode|raw }},
+                fileValidateTypeLabelExpectedTypesMap: {{ allowed_filetypes|json_encode|raw }},
+                labelFileTypeNotAllowed: '{{ "File of invalid type"|trans }}',
+                fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|trans }}',
+
+                // File sizes validation
+                allowFileSizeValidation: true,
+                maxFileSize: '{{ max_filesize }}',
+                maxTotalFileSize: '{{ max_totalsize }}',
+                labelMaxFileSizeExceeded: '{{ "File is too large"|trans }}',
+                labelMaxFileSize: '{{ "Maximum file size is {filesize}"|trans }} ',
+                labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|trans }}',
+                labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|trans }} ',
+            });
+        })
+    </script>
+    {% endput %}
+    
+{% endif %}

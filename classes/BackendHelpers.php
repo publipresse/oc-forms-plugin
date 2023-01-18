@@ -5,8 +5,7 @@ namespace Publipresse\Forms\Classes;
 use Backend;
 use BackendAuth;
 
-class BackendHelpers
-{
+class BackendHelpers {
     /**
      * Return a Backend URL based on a matrix of URLS and permissions
      *
@@ -15,8 +14,7 @@ class BackendHelpers
      *
      * @return string
      */
-    public static function getBackendURL(array $urls, string $default): string
-    {
+    public static function getBackendURL(array $urls, string $default): string {
         $user = BackendAuth::getUser();
         foreach ($urls as $permission => $URL) {
             if ($user->hasAccess($permission)) {
@@ -31,8 +29,7 @@ class BackendHelpers
      *
      * @return boolean
      */
-    public static function isTranslatePlugin(): bool
-    {
+    public static function isTranslatePlugin(): bool {
         return class_exists('\RainLab\Translate\Classes\Translator') && class_exists('\RainLab\Translate\Models\Message') && class_exists('\RainLab\Translate\Models\Locale');
     }
 
@@ -43,8 +40,7 @@ class BackendHelpers
      *
      * @return string
      */
-    public static function array2ul($data): string
-    {
+    public static function array2ul($data): string {
         $return = '';
         foreach ($data as $index => $item) {
             if (!is_string($item)) {
@@ -68,8 +64,7 @@ class BackendHelpers
      *
      * @return string Anonymized address
      */
-    public static function anonymizeIPv4(string $address): string
-    {
+    public static function anonymizeIPv4(string $address): string {
         return inet_ntop(inet_pton($address) & inet_pton("255.255.255.0"));
     }
 
@@ -82,8 +77,7 @@ class BackendHelpers
      *
      * @return string
      */
-    public static function replaceToken(string $pattern, string $replacement = null, string $subject): string
-    {
+    public static function replaceToken(string $pattern, string $replacement = null, string $subject): string {
         $pattern = '/{{\s*(' . $pattern . ')\s*}}/';
         return preg_replace($pattern, $replacement, $subject);
     }

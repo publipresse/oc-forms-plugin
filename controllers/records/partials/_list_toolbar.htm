@@ -11,7 +11,7 @@
             'request_confirm' => e(trans('backend::lang.list.delete_selected_confirm')),
             'request_success' => "
                 $('#records-toolbar').find('button').prop('disabled', true);
-                $.oc.flashMsg({
+                oc.flashMsg({
                     'text': '" . e(trans('backend::lang.list.delete_selected_success')) . "',
                     'class': 'success',
                     'interval': 3
@@ -27,7 +27,7 @@
         echo $this->makePartial('$/publipresse/forms/controllers/records/partials/_action_button.htm', [
             'type'            => 'default',
             'icon'            => 'oc-icon-eye-slash',
-            'label'           => e(trans('publipresse.forms::lang.controllers.records.buttons.unread')),
+            'label'           => __('Mark as Unread'),
             'onclick'         => "$(this).data('request-data', { state: 'unread', checked: $('.control-list').listWidget('getChecked') })",
             'needs_selected'  => true,
             'request'         => 'onReadState',
@@ -42,7 +42,7 @@
         echo $this->makePartial('$/publipresse/forms/controllers/records/partials/_action_button.htm', [
             'type'            => 'default',
             'icon'            => 'oc-icon-eye',
-            'label'           => e(trans('publipresse.forms::lang.controllers.records.buttons.read')),
+            'label'           => __('Mark as Read'),
             'onclick'         => "$(this).data('request-data', { state: 'read', checked: $('.control-list').listWidget('getChecked') })",
             'needs_selected'  => true,
             'request'         => 'onReadState',
@@ -61,9 +61,9 @@
             echo $this->makePartial('$/publipresse/forms/controllers/records/partials/_action_button.htm', [
                 'type'            => 'danger',
                 'icon'            => 'oc-icon-history',
-                'label'           => e(trans('publipresse.forms::lang.controllers.records.buttons.gdpr_clean')),
+                'label'           => __('GDPR Clean'),
                 'request'         => 'onGDPRClean',
-                'request_confirm' => e(trans('publipresse.forms::lang.controllers.records.alerts.gdpr_confirm')),
+                'request_confirm' => __('Are you sure you want to clean old records? This action cannot be undone!'),
                 'request_success' => "
                     $('#records-toolbar').find('button').blur();
                     $.oc.sideNav.setCounter('forms/records', data.counter);

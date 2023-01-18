@@ -15,7 +15,7 @@ class GDPR
         $gdpr_days   = Settings::get('gdpr_days', false);
 
         if (!$gdpr_enable) {
-            Flash::error(e(trans('publipresse.forms::lang.classes.GDPR.alert_gdpr_disabled')));
+            Flash::error(__('GDPR options are disabled'));
             return;
         }
 
@@ -25,6 +25,6 @@ class GDPR
             return $rows;
         }
 
-        Flash::error(e(trans('publipresse.forms::lang.classes.GDPR.alert_invalid_gdpr')));
+        Flash::error(__('Invalid GDPR days setting value'));
     }
 }

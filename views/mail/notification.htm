@@ -1,31 +1,34 @@
-subject = "Magic Forms :: new form submited"
+subject = "New form submitted"
 ==
 Record #{{ id}}
 {% for label,value in data %}
     {{ label|capitalize }}: {% if value is iterable %}{% for val in value %}{{ val|nl2br }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}{{ value|nl2br }}{% endif %}
 {% endfor %}
 ==
-<h3>Record #{{ id}}</h3>
+{% partial 'table' body %}
+    <table>
+        {% for label,value in data %}
+            <tr>
+                <td style="vertical-align:top; padding-right:10px; font-weight:bold;">{{ label|capitalize }}</td>
+                <td style="vertical-align:top; padding-right:10px;">
+                    {% if value is iterable %}
+                        {% for val in value %}
+                            {{ val|nl2br }}
+                            {% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ value|nl2br }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endpartial %}
 
-<table style="width:60%; border-collapse:collapse; ">
-{% for label,value in data %}
-    <tr>
-        <td style="width:20%; background-color:#ECF0F1; text-align:right; padding:10px; border:solid 1px #D4D8DA; font-weight:bold;">{{ label|capitalize }}:</td>
-        <td style="width:80%; background-color:#F9F9F9; padding:10px; border:solid 1px #D4D8DA;">
-            {% if value is iterable %}
-                {% for val in value %}
-                    {{ val|nl2br }}
-                    {% if not loop.last %}, {% endif %}
-                {% endfor %}
-            {% else %}
-                {{ value|nl2br }}
-            {% endif %}
-        </td>
-    </tr>
-{% endfor %}
-</table>
-
-<div style="width:60%; text-align:right;">
-    <p style="font-size:0.8em; color:#888; font-weight:bold;">IP: {{ ip }}</p>
-    <p style="font-size:0.8em; color:#888; font-weight:bold;">Time: {{ date }}</p>
-</div>
+{% partial 'subcopy' body %}
+    <p>
+        Id: {{ id }}<br />
+        Ip: {{ ip }}<br />
+        Date: {{ date }}
+    </p>
+{% endpartial %}

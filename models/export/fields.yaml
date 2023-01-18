@@ -4,17 +4,17 @@ fields:
     #   FILTER SECTION
     ################################################################################################################################################
     filter_section:
-        label   : publipresse.forms::lang.controllers.exports.filter_section
+        label   : 1. Filter records
         type    : section
         cssClass: m-t-md
 
     filter_type:
-        label  : publipresse.forms::lang.controllers.exports.filter_type
+        label  : Export all records
         type   : switch
         default: true
 
     filter_groups:
-        label  : publipresse.forms::lang.controllers.exports.filter_groups
+        label  : Groups
         span   : left
         type   : checkboxlist
         options: getGroupsOptions
@@ -24,7 +24,7 @@ fields:
             condition: checked
 
     filter_date_after:
-        label  : publipresse.forms::lang.controllers.exports.filter_date_after
+        label  : Date after
         span   : left
         type   : datepicker
         mode   : date
@@ -34,7 +34,7 @@ fields:
             condition: checked
 
     filter_date_before:
-        label  : publipresse.forms::lang.controllers.exports.filter_date_before
+        label  : Date before
         span   : left
         type   : datepicker
         mode   : date
@@ -47,40 +47,40 @@ fields:
     #   OPTIONS SECTION
     ################################################################################################################################################
     options_section:
-        label   : publipresse.forms::lang.controllers.exports.options_section
+        label   : 2. Extra options
         type    : section
         cssClass: m-t-md
 
     options_delimiter:
-        label  : publipresse.forms::lang.controllers.exports.options_delimiter
-        comment: publipresse.forms::lang.controllers.exports.options_delimiter_com
+        label  : Use alternative delimiter
+        comment: Use semicolon as delimiter
         span   : right
         type   : switch
         default: false
 
     options_metadata:
-        label  : publipresse.forms::lang.controllers.exports.options_metadata
-        comment: publipresse.forms::lang.controllers.exports.options_metadata_com
+        label  : Include metadata
+        comment: Export records with metadata (Record ID, group, IP, created date)
         span   : left
         type   : switch
         default: true
 
     options_utf:
-        label  : publipresse.forms::lang.controllers.exports.options_utf
-        comment: publipresse.forms::lang.controllers.exports.options_utf_com
+        label  : Encode in UTF8
+        comment: Encode your csv in UTF-8 to support non standard characters
         span   : right
         type   : switch
         default: true
 
     options_deleted:
-        label  : publipresse.forms::lang.controllers.exports.options_deleted
+        label  : Include deleted records
         span   : left
         type   : switch
         default: false
 
     options_files:
-        label  : publipresse.forms::lang.controllers.exports.options_files
-        comment: publipresse.forms::lang.controllers.exports.options_files_com
+        label  : Include attached files
+        comment: Only download URLs will be exported
         span   : left
         type   : switch
         default: false

@@ -1,31 +1,41 @@
 columns:
 
     id:
-        label     : publipresse.forms::lang.controllers.records.columns.id
+        label : Id
         searchable: true
-
-    group:
-        label     : publipresse.forms::lang.controllers.records.columns.group
-        searchable: true
-
-    ip:
-        label     : publipresse.forms::lang.controllers.records.columns.ip
-        searchable: true
-
-    form_data:
-        label     : publipresse.forms::lang.controllers.records.columns.form_data
-        type      : partial
-        path      : $/publipresse/forms/models/record/fields/_stored_fields.htm
-        searchable: true
-
-    files:
-        label     : publipresse.forms::lang.controllers.records.columns.files
-        type      : partial
-        path      : $/publipresse/forms/models/record/fields/_files_fields.htm
-        searchable: false
-        sortable  : false
-       #invisible : true
 
     created_at:
-        label: publipresse.forms::lang.controllers.records.columns.created_at
-        type: datetime
+        label: Created at
+        type: timetense
+
+    group:
+        label : Group
+        searchable: false
+
+    ip:
+        label : IP address
+        searchable: true
+        invisible: true
+
+    form_data_summary:
+        label : Fields (summary)
+        type : partial
+        path : $/publipresse/forms/models/record/fields/_stored_fields.htm
+        searchable: false
+        valueFrom: form_data
+
+    form_data_details:
+        label : Fields (details)
+        type : partial
+        path : $/publipresse/forms/models/record/fields/_stored_fields.htm
+        searchable: false
+        invisible: true
+        valueFrom: form_data
+
+    files:
+        label : Attached files
+        type : partial
+        path : $/publipresse/forms/models/record/fields/_files_fields.htm
+        searchable: false
+        sortable : false
+

@@ -2,263 +2,260 @@
 
 namespace Publipresse\Forms\Classes;
 
-use Lang;
-
 trait SharedProperties
 {
     public function defineProperties()
     {
         return [
             'group' => [
-                'title'             => 'publipresse.forms::lang.components.shared.group.title',
-                'description'       => 'publipresse.forms::lang.components.shared.group.description',
-                'type'              => 'string',
+                'title' =>  __('Group'),
+                'type' => 'string',
                 'showExternalParam' => false,
+                'default' => __('Contact form'),
+                'validation' => ['required' => ['message' => __('Group is required')]]
             ],
             'rules' => [
-                'title'             => 'publipresse.forms::lang.components.shared.rules.title',
-                'description'       => 'publipresse.forms::lang.components.shared.rules.description',
-                'type'              => 'dictionary',
-                'group'             => 'publipresse.forms::lang.components.shared.group_validation',
+                'title' => __('Rules'),
+                'type' => 'dictionary',
+                'group' => __('Form validation'),
                 'showExternalParam' => false,
             ],
             'rules_messages' => [
-                'title'             => 'publipresse.forms::lang.components.shared.rules_messages.title',
-                'description'       => 'publipresse.forms::lang.components.shared.rules_messages.description',
-                'type'              => 'dictionary',
-                'group'             => 'publipresse.forms::lang.components.shared.group_validation',
+                'title' => __('Rules messages'),
+                'type' => 'dictionary',
+                'group' => __('Form validation'),
                 'showExternalParam' => false,
             ],
             'custom_attributes' => [
-                'title'             => 'publipresse.forms::lang.components.shared.custom_attributes.title',
-                'description'       => 'publipresse.forms::lang.components.shared.custom_attributes.description',
-                'type'              => 'dictionary',
-                'group'             => 'publipresse.forms::lang.components.shared.group_validation',
+                'title' => __('Custom attributes'),
+                'type' => 'dictionary',
+                'group' => __('Form validation'),
                 'showExternalParam' => false,
             ],
             'messages_success' => [
-                'title'             => 'publipresse.forms::lang.components.shared.messages_success.title',
-                'description'       => 'publipresse.forms::lang.components.shared.messages_success.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_messages',
-                'default'           => Lang::get('publipresse.forms::lang.components.shared.messages_success.default'),
+                'title' => __('Success'),
+                'type' => 'string',
+                'group' => __('Flash messages'),
+                'default' => __('Your form was successfully submitted'),
                 'showExternalParam' => false,
-                'validation'        => ['required' => ['message' => Lang::get('publipresse.forms::lang.components.shared.validation_req')]]
+                'validation' => ['required' => ['message' => __('Flash success message is required')]]
             ],
             'messages_errors' => [
-                'title'             => 'publipresse.forms::lang.components.shared.messages_errors.title',
-                'description'       => 'publipresse.forms::lang.components.shared.messages_errors.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_messages',
-                'default'           => Lang::get('publipresse.forms::lang.components.shared.messages_errors.default'),
+                'title' => __('Error'),
+                'type' => 'string',
+                'group' => __('Flash messages'),
+                'default' => __('There were errors with your submission'),
                 'showExternalParam' => false,
-                'validation'        => ['required' => ['message' => Lang::get('publipresse.forms::lang.components.shared.validation_req')]]
+                'validation' => ['required' => ['message' => __('Flash error message is required')]]
             ],
             'messages_partial' => [
-                'title'             => 'publipresse.forms::lang.components.shared.messages_partial.title',
-                'description'       => 'publipresse.forms::lang.components.shared.messages_partial.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_messages',
+                'title' => __('Use custom partial'),
+                'type' => 'string',
+                'group' => __('Flash messages'),
                 'showExternalParam' => false
             ],
             'mail_enabled' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_enabled.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_enabled.description',
-                'type'              => 'checkbox',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('Send notifications'),
+                'type' => 'checkbox',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_subject' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_subject.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_subject.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('Subject'),
+                'description' => __('You can use {{ record }} to access model or {{ form }} to access submitted datas'),
+                'type' => 'string',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_recipients' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_recipients.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_recipients.description',
-                'type'              => 'stringList',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('Recipients'),
+                'description' => __('Specify email recipients (one address per line)'),
+                'type' => 'stringList',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_bcc' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_bcc.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_bcc.description',
-                'type'              => 'stringList',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('BBC'),
+                'description' => __('Send blind carbon copy to email recipients (one address per line)'),
+                'type' => 'stringList',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_replyto' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_replyto.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_replyto.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('Reply to'),
+                'description' => __('Specify the field name containing the sender email address'),
+                'type' => 'string',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_template' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_template.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_template.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail',
+                'title' => __('Mail template'),
+                'description' => __('Specify email template code to use'),
+                'type' => 'string',
+                'group' => __('Notification settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_enabled' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_resp_enabled.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_resp_enabled.description',
-                'type'              => 'checkbox',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Send auto-response'),
+                'type' => 'checkbox',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_field' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_resp_field.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_resp_field.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Email field'),
+                'description' => __('Specify the field name containing the sender email address'),
+                'type' => 'string',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_name' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_resp_name.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_resp_name.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Sender name'),
+                'type' => 'string',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_from' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_resp_from.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_resp_from.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Sender address'),
+                'type' => 'string',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_subject' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_resp_subject.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_resp_subject.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Subject'),
+                'description' => __('You can use {{ record }} to access model or {{ form }} to access submitted datas'),
+                'type' => 'string',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'mail_resp_template' => [
-                'title'             => 'publipresse.forms::lang.components.shared.mail_template.title',
-                'description'       => 'publipresse.forms::lang.components.shared.mail_template.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_mail_resp',
+                'title' => __('Mail template'),
+                'description' => __('Specify email template code to use'),
+                'type' => 'string',
+                'group' => __('Auto-response settings'),
                 'showExternalParam' => false
             ],
             'reset_form' => [
-                'title'             => 'publipresse.forms::lang.components.shared.reset_form.title',
-                'description'       => 'publipresse.forms::lang.components.shared.reset_form.description',
-                'type'              => 'checkbox',
-                'group'             => 'publipresse.forms::lang.components.shared.group_settings',
+                'title' => __('Reset form'),
+                'type' => 'checkbox',
+                'group' => __('More settings'),
                 'showExternalParam' => false
             ],
             'redirect' => [
-                'title'             => 'publipresse.forms::lang.components.shared.redirect.title',
-                'description'       => 'publipresse.forms::lang.components.shared.redirect.description',
-                'type'              => 'string',
-                'group'             => 'publipresse.forms::lang.components.shared.group_settings',
+                'title' => __('Redirect on success'),
+                'type' => 'string',
+                'group' => __('More settings'),
                 'showExternalParam' => false
             ],
-            'inline_errors' => [
-                'title'             => 'publipresse.forms::lang.components.shared.inline_errors.title',
-                'description'       => 'publipresse.forms::lang.components.shared.inline_errors.description',
-                'type'              => 'dropdown',
-                'options'           => ['disabled' => 'publipresse.forms::lang.components.shared.inline_errors.disabled', 'display' => 'publipresse.forms::lang.components.shared.inline_errors.display', 'variable' => 'publipresse.forms::lang.components.shared.inline_errors.variable'],
-                'default'           => 'disabled',
-                'group'             => 'publipresse.forms::lang.components.shared.group_settings',
+            'feedback_mode' => [
+                'title' => __('Feedback mode'),
+                'type' => 'dropdown',
+                'options' => [
+                    'flash' => __('Flash message'), 
+                    'inline' => __('Inline errors'), 
+                    'variable' => __('JS variable'),
+                ],
+                'default' => 'flash',
+                'group' => __('More settings'),
                 'showExternalParam' => false
             ],
             'js_on_success' => [
-                'title'             => 'publipresse.forms::lang.components.shared.js_on_success.title',
-                'description'       => 'publipresse.forms::lang.components.shared.js_on_success.description',
-                'type'              => 'text',
-                'group'             => 'publipresse.forms::lang.components.shared.group_settings',
+                'title' => __('JS on success'),
+                'description' => __('Custom javascript code to execute on success'),
+                'type' => 'text',
+                'group' => __('More settings'),
                 'showExternalParam' => false
             ],
             'js_on_error' => [
-                'title'             => 'publipresse.forms::lang.components.shared.js_on_error.title',
-                'description'       => 'publipresse.forms::lang.components.shared.js_on_error.description',
-                'type'              => 'text',
-                'group'             => 'publipresse.forms::lang.components.shared.group_settings',
-                'showExternalParam' => false
+                'title' => __('JS on error'),
+                'description' => __("Custom javascript code to execute on error, don't work with inline feedback mode"),
+                'type' => 'text',
+                'group' => __('More settings'),
+                'showExternalParam' => false,
             ],
             'allowed_fields' => [
-                'title'             => 'publipresse.forms::lang.components.shared.allowed_fields.title',
-                'description'       => 'publipresse.forms::lang.components.shared.allowed_fields.description',
-                'type'              => 'stringList',
-                'group'             => 'publipresse.forms::lang.components.shared.group_security',
-                'showExternalParam' => false
+                'title' => __('Allowed fields'),
+                'description' => __('Specify which fields should be filtered and stored'),
+                'type' => 'stringList',
+                'group' => __('Security'),
+                'showExternalParam' => false,
+                //'validation' => ['required' => ['message' => __('For security reasons, you must specify the list of fields that should be filtered and stored')]]
             ],
             'sanitize_data' => [
-                'title'             => 'publipresse.forms::lang.components.shared.sanitize_data.title',
-                'description'       => 'publipresse.forms::lang.components.shared.sanitize_data.description',
-                'type'              => 'dropdown',
-                'options'           => ['disabled' => 'publipresse.forms::lang.components.shared.sanitize_data.disabled', 'htmlspecialchars' => 'publipresse.forms::lang.components.shared.sanitize_data.htmlspecialchars'],
-                'default'           => 'disabled',
-                'group'             => 'publipresse.forms::lang.components.shared.group_security',
+                'title' => __('Sanitize form data'),
+                'type' => 'dropdown',
+                'options' => [
+                    'disabled' => __('Disabled'), 
+                    'htmlspecialchars' => __('Use htmlspecialchars')
+                ],
+                'default' => 'disabled',
+                'group' => __('Security'),
                 'showExternalParam' => false
             ],
             'anonymize_ip' => [
-                'title'             => 'publipresse.forms::lang.components.shared.anonymize_ip.title',
-                'description'       => 'publipresse.forms::lang.components.shared.anonymize_ip.description',
-                'type'              => 'dropdown',
-                'options'           => ['disabled' => 'publipresse.forms::lang.components.shared.anonymize_ip.disabled', 'partial' => 'publipresse.forms::lang.components.shared.anonymize_ip.partial', 'full' => 'publipresse.forms::lang.components.shared.anonymize_ip.full'],
-                'default'           => 'disabled',
-                'group'             => 'publipresse.forms::lang.components.shared.group_security',
+                'title' => __('Anonymize IP'),
+                'type' => 'dropdown',
+                'options' => [
+                    'disabled' => __('Disabled'),
+                    'partial' => __('Partial'),
+                    'full' => __('Full')
+                ],
+                'default' => 'disabled',
+                'group' => __('Security'),
                 'showExternalParam' => false
             ],
             'recaptcha_enabled' => [
-                'title'             => 'publipresse.forms::lang.components.shared.recaptcha_enabled.title',
-                'description'       => 'publipresse.forms::lang.components.shared.recaptcha_enabled.description',
-                'type'              => 'checkbox',
-                'group'             => 'publipresse.forms::lang.components.shared.group_recaptcha',
+                'title' => __('Enable reCAPTCHA'),
+                'type' => 'checkbox',
+                'group' => __('reCAPTCHA settings'),
                 'showExternalParam' => false
             ],
             'recaptcha_theme' => [
-                'title'             => 'publipresse.forms::lang.components.shared.recaptcha_theme.title',
-                'description'       => 'publipresse.forms::lang.components.shared.recaptcha_theme.description',
-                'type'              => 'dropdown',
-                'options'           => ['light' => 'publipresse.forms::lang.components.shared.recaptcha_theme.light', 'dark' => 'publipresse.forms::lang.components.shared.recaptcha_theme.dark'],
-                'default'           => 'light',
-                'group'             => 'publipresse.forms::lang.components.shared.group_recaptcha',
+                'title' => __('Theme'),
+                'type' => 'dropdown',
+                'options' => [
+                    'light' => __('Light'), 
+                    'dark' => __('Dark')
+                ],
+                'default' => 'light',
+                'group' => __('reCAPTCHA settings'),
                 'showExternalParam' => false
             ],
             'recaptcha_type' => [
-                'title'             => 'publipresse.forms::lang.components.shared.recaptcha_type.title',
-                'description'       => 'publipresse.forms::lang.components.shared.recaptcha_type.description',
-                'type'              => 'dropdown',
-                'options'           => ['image' => 'publipresse.forms::lang.components.shared.recaptcha_type.image', 'audio' => 'publipresse.forms::lang.components.shared.recaptcha_type.audio'],
-                'default'           => 'image',
-                'group'             => 'publipresse.forms::lang.components.shared.group_recaptcha',
+                'title' => __('Type'),
+                'type' => 'dropdown',
+                'options' => [
+                    'image' => __('Image'),
+                    'audio' => __('Audio')
+                ],
+                'default' => 'image',
+                'group' => __('reCAPTCHA settings'),
                 'showExternalParam' => false
             ],
             'recaptcha_size' => [
-                'title'             => 'publipresse.forms::lang.components.shared.recaptcha_size.title',
-                'description'       => 'publipresse.forms::lang.components.shared.recaptcha_size.description',
-                'type'              => 'dropdown',
-                'options'           => [
-                    'normal' => 'publipresse.forms::lang.components.shared.recaptcha_size.normal',
-                    'compact' => 'publipresse.forms::lang.components.shared.recaptcha_size.compact',
-                    'invisible' => 'publipresse.forms::lang.components.shared.recaptcha_size.invisible',
+                'title' => __('Size'),
+                'type' => 'dropdown',
+                'options' => [
+                    'normal' => __('Normal'),
+                    'compact' => __('Compact'),
+                    'invisible' => __('Invisible'),
                 ],
-                'default'           => 'normal',
-                'group'             => 'publipresse.forms::lang.components.shared.group_recaptcha',
+                'default' => 'normal',
+                'group' => __('reCAPTCHA settings'),
                 'showExternalParam' => false
             ],
             'skip_database' => [
-                'title'             => 'publipresse.forms::lang.components.shared.skip_database.title',
-                'description'       => 'publipresse.forms::lang.components.shared.skip_database.description',
-                'type'              => 'checkbox',
-                'group'             => 'publipresse.forms::lang.components.shared.group_advanced',
+                'title' => __('Skip database'),
+                'type' => 'checkbox',
+                'group' => __('Advanced settings'),
                 'showExternalParam' => false
             ],
             'emails_date_format' => [
-                'title'             => 'publipresse.forms::lang.components.shared.emails_date_format.title',
-                'description'       => 'publipresse.forms::lang.components.shared.emails_date_format.description',
-                'default'           => 'Y-m-d',
-                'group'             => 'publipresse.forms::lang.components.shared.group_advanced',
+                'title' => __('Date format on emails'),
+                'default' => 'Y-m-d',
+                'group' => __('Advanced settings'),
                 'showExternalParam' => false
             ],
         ];
     }
+
 }

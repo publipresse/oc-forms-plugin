@@ -1,5 +1,8 @@
 {% if (recaptcha_enabled) %}
-    <div id="{{ __SELF__ }}" class="g-recaptcha" data-sitekey="{{ __SELF__.settings.recaptcha_site_key }}" data-theme="{{ __SELF__.property('recaptcha_theme') }}" data-type="{{ __SELF__.property('recaptcha_type') }}" data-size="{{ __SELF__.property('recaptcha_size') }}"></div>
+    <div class="g-recaptcha" data-sitekey="{{ __SELF__.settings.recaptcha_site_key }}" data-theme="{{ __SELF__.property('recaptcha_theme') }}" data-type="{{ __SELF__.property('recaptcha_type') }}" data-size="{{ __SELF__.property('recaptcha_size') }}" ></div>
 {% elseif (recaptcha_misconfigured) %}
-    <h5>{{ recaptcha_warn }}</h5>
+    <div class="alert alert-warning">
+        <button type="button" class="alert-close" onclick="this.parentElement.remove()">✖</button>
+        <p>{{ recaptcha_warn }}</p>
+    </div>
 {% endif %}

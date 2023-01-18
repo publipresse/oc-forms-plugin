@@ -13,11 +13,10 @@ class CreateRecordsTable extends Migration
         Schema::create('publipresse_forms_records', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('group')->default('(Empty)');
+            $table->string('group')->default('None');
             $table->text('form_data')->nullable();
             $table->string('ip')->nullable();
             $table->boolean('unread')->default(1);
-            $table->softDeletes();
             $table->timestamps();
         });
     }

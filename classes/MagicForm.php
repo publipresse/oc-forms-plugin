@@ -2,71 +2,71 @@
 
 namespace Publipresse\Forms\Classes;
 
+
+use App;
+use Lang;
+use Input;
+use Event;
+use Request;
+use System\Models\File;
+use Session;
+use Redirect;
+use Flash;
+use Config;
+use AjaxException;
+use Validator;
+use ValidationException;
+
+use Carbon\Carbon;
+
 use Cms\Classes\ComponentBase;
+
 use Publipresse\Forms\Models\Record;
 use Publipresse\Forms\Models\Settings;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
+use Publipresse\Forms\Classes\SendMail;
 use Publipresse\Forms\Classes\BackendHelpers;
-use October\Rain\Support\Facades\Config;
-use October\Rain\Exception\AjaxException;
-use Publipresse\Forms\Classes\FilePond\FilePond;
-use October\Rain\Support\Facades\Validator;
-use Publipresse\Forms\Classes\Mails\AutoResponse;
-use Publipresse\Forms\Classes\Mails\Notification;
-use October\Rain\Exception\ValidationException;
 
-abstract class MagicForm extends ComponentBase
-{
+abstract class MagicForm extends ComponentBase {
 
     use \Publipresse\Forms\Classes\ReCaptcha;
     use \Publipresse\Forms\Classes\SharedProperties;
 
-    public function onRun()
-    {
-        $this->page['recaptcha_enabled']       = $this->isReCaptchaEnabled();
-        $this->page['recaptcha_misconfigured'] = $this->isReCaptchaMisconfigured();
+    public function onRun() {
 
-        if ($this->property('uploader_enable')) {
-            $this->page['allowed_filesize'] = Settings::get('global_allowed_filesize');
-        }
+        $this->page['recaptcha_enabled'] = $this->isReCaptchaEnabled();
+        $this->page['recaptcha_misconfigured'] = $this->isReCaptchaMisconfigured();
 
         if ($this->isReCaptchaEnabled()) {
             $this->loadReCaptcha();
         }
 
         if ($this->isReCaptchaMisconfigured()) {
-            $this->page['recaptcha_warn'] = Lang::get('publipresse.forms::lang.components.shared.recaptcha_warn');
+            $this->page['recaptcha_warn'] = __('Warning: reCAPTCHA is not properly configured. Please, goto Backend > Settings > CMS > Magic Forms and configure.');
         }
-
     }
 
-    public function settings()
-    {
+    public function settings() {
         return [
-            'recaptcha_site_key'   => Settings::get('recaptcha_site_key'),
+            'recaptcha_site_key' => Settings::get('recaptcha_site_key'),
             'recaptcha_secret_key' => Settings::get('recaptcha_secret_key'),
         ];
+        
     }
 
-    public function onFormSubmit()
-    {
+    public function onFormSubmit() {
+
         // FLASH PARTIAL
         $flash_partial = $this->property('messages_partial', '@flash.htm');
 
         // CSRF CHECK
         if (Config::get('cms.enableCsrfProtection') && (Session::token() != post('_token'))) {
             throw new AjaxException(['#' . $this->alias . '_forms_flash' => $this->renderPartial($flash_partial, [
-                'status'  => 'error',
-                'type'    => 'danger',
-                'content' => Lang::get('publipresse.forms::lang.components.shared.csrf_error'),
+                'status' => 'error',
+                'type' => 'danger',
+                'content' => __('Form session expired! Please refresh the page.'),
             ])]);
         }
-
+        
         // LOAD TRANSLATOR PLUGIN
         if (BackendHelpers::isTranslatePlugin()) {
             $translator = \RainLab\Translate\Classes\Translator::instance();
@@ -74,7 +74,7 @@ abstract class MagicForm extends ComponentBase
             $locale = $translator->getLocale();
             \RainLab\Translate\Models\Message::setContext($locale);
         }
-
+        
         // FILTER ALLOWED FIELDS
         $allow = $this->property('allowed_fields');
         if (is_array($allow) && !empty($allow)) {
@@ -87,101 +87,73 @@ abstract class MagicForm extends ComponentBase
         } else {
             $post = post();
         }
-
+        
         // SANITIZE FORM DATA
         if ($this->property('sanitize_data') == 'htmlspecialchars') {
             $post = $this->array_map_recursive(function ($value) {
                 return htmlspecialchars($value, ENT_QUOTES);
             }, $post);
         }
-
+        
         // VALIDATION PARAMETERS
         $rules = (array)$this->property('rules');
-        $msgs  = (array)$this->property('rules_messages');
+        $msgs = (array)$this->property('rules_messages');
         $custom_attributes = (array)$this->property('custom_attributes');
-
+        
         // TRANSLATE CUSTOM ERROR MESSAGES
         if (BackendHelpers::isTranslatePlugin()) {
             foreach ($msgs as $rule => $msg) {
                 $msgs[$rule] = \RainLab\Translate\Models\Message::trans($msg);
             }
         }
-
+        
         // ADD reCAPTCHA VALIDATION
-        if ($this->isReCaptchaEnabled() && $this->property('recaptcha_size') != 'invisible') {
-            $rules['g-recaptcha-response'] = 'required';
-        }
-
-        // DO FORM VALIDATION
-        $validator = Validator::make($post, $rules, $msgs, $custom_attributes);
-
-        // NICE reCAPTCHA FIELD NAME
         if ($this->isReCaptchaEnabled()) {
-            $fields_names = ['g-recaptcha-response' => 'reCAPTCHA'];
-            $validator->setAttributeNames(array_merge($fields_names, $custom_attributes));
+            $rules['g-recaptcha-response'] = 'required';
+            $custom_attributes['g-recaptcha-response'] = 'reCAPTCHA';
         }
 
+        // ADD files $post for validation
+        if($this->property('uploader_enable')) {
+            $post['files'] = Input::file('files');
+        }
+        
+        // DO FORM VALIDATION,
+        $validator = Validator::make($post, $rules, $msgs, $custom_attributes);
+        
+        
         // VALIDATE ALL + CAPTCHA EXISTS
         if ($validator->fails()) {
-
+            
             // GET DEFAULT ERROR MESSAGE
             $message = $this->property('messages_errors');
-
+            
             // LOOK FOR TRANSLATION
             if (BackendHelpers::isTranslatePlugin()) {
                 $message = \RainLab\Translate\Models\Message::trans($message);
             }
-
+            
             // THROW ERRORS
-            if ($this->property('inline_errors') == 'display') {
+            if ($this->property('feedback_mode') == 'inline') {
                 throw new ValidationException($validator);
             } else {
                 throw new AjaxException($this->exceptionResponse($validator, [
-                    'status'  => 'error',
-                    'type'    => 'danger',
-                    'title'   => $message,
-                    'list'    => $validator->messages()->all(),
-                    'errors'  => json_encode($validator->messages()->messages()),
+                    'status' => 'error',
+                    'type' => 'danger',
+                    'title' => $message,
+                    'list' => $validator->messages()->all(),
+                    'jerrors' => json_encode($validator->messages()->messages()),
                     'jscript' => $this->property('js_on_error'),
                 ]));
             }
         }
 
-        // IF FIRST VALIDATION IS OK, VALIDATE CAPTCHA vs GOOGLE
-        // (this prevents to resolve captcha after every form error)
-        if ($this->isReCaptchaEnabled()) {
-
-            // PREPARE RECAPTCHA VALIDATION
-            $rules   = ['g-recaptcha-response'           => 'recaptcha'];
-            $err_msg = ['g-recaptcha-response.recaptcha' => Lang::get('publipresse.forms::lang.validation.recaptcha_error')];
-
-            // DO SECOND VALIDATION
-            $validator = Validator::make($post, $rules, $err_msg);
-
-            // VALIDATE ALL + CAPTCHA EXISTS
-            if ($validator->fails()) {
-
-                // THROW ERRORS
-                if ($this->property('inline_errors') == 'display') {
-                    throw new ValidationException($validator);
-                } else {
-                    throw new AjaxException($this->exceptionResponse($validator, [
-                        'status'  => 'error',
-                        'type'    => 'danger',
-                        'content' => Lang::get('publipresse.forms::lang.validation.recaptcha_error'),
-                        'errors'  => json_encode($validator->messages()->messages()),
-                        'jscript' => $this->property('js_on_error'),
-                    ]));
-                }
-            }
-        }
-
         // REMOVE EXTRA FIELDS FROM STORED DATA
         unset($post['_token'], $post['g-recaptcha-response'], $post['_session_key'], $post['files']);
-
+        
         // FIRE BEFORE SAVE EVENT
         Event::fire('publipresse.forms.beforeSaveRecord', [&$post, $this]);
-
+        
         if (count($custom_attributes)) {
             $post = collect($post)->mapWithKeys(function ($val, $key) use ($custom_attributes) {
                 return [array_get($custom_attributes, $key, $key) => $val];
@@ -189,36 +161,27 @@ abstract class MagicForm extends ComponentBase
         }
 
         $record = new Record;
-        $record->ip        = $this->getIP();
-        $record->created_at = date('Y-m-d H:i:s');
+        $record->ip = $this->getIP();
 
         // SAVE RECORD TO DATABASE
         if (!$this->property('skip_database')) {
-            $record->form_data = json_encode($post, JSON_UNESCAPED_UNICODE);
-            if ($this->property('group') != '') {
-                $record->group = $this->property('group');
-            }
+            $record->form_data = $post;
+            $record->group = $this->property('group');
 
-            // attach files
+            // Attach files
             $this->attachFiles($record);
-
+            
             $record->save(null, post('_session_key'));
         }
 
         // SEND NOTIFICATION EMAIL
         if ($this->property('mail_enabled')) {
-            $notification = App::makeWith(Notification::class, [
-                $this->getProperties(), $post, $record, $record->files
-            ]);
-            $notification->send();
+            SendMail::sendNotification($this->getProperties(), $post, $record, $record->files);
         }
 
         // SEND AUTORESPONSE EMAIL
         if ($this->property('mail_resp_enabled')) {
-            $autoresponse = App::makeWith(AutoResponse::class, [
-                $this->getProperties(), $post, $record
-            ]);
-            $autoresponse->send();
+            SendMail::sendAutoResponse($this->getProperties(), $post, $record);
         }
 
         // FIRE AFTER SAVE EVENT
@@ -239,54 +202,25 @@ abstract class MagicForm extends ComponentBase
 
         // DISPLAY SUCCESS MESSAGE
         return ['#' . $this->alias . '_forms_flash' => $this->renderPartial($flash_partial, [
-            'status'  => 'success',
-            'type'    => 'success',
+            'status'=> 'success',
+            'type'=> 'success',
             'content' => $message,
-            'jscript' => $this->prepareJavaScript(),
+            'jscript' => $this->property('js_on_success'),
         ])];
+
     }
 
-    private function exceptionResponse($validator, $params)
-    {
+    private function exceptionResponse($validator, $params) {
         // FLASH PARTIAL
         $flash_partial = $this->property('messages_partial', '@flash.htm');
 
         // EXCEPTION RESPONSE
         $response = ['#' . $this->alias . '_forms_flash' => $this->renderPartial($flash_partial, $params)];
 
-        // INCLUDE ERROR FIELDS IF REQUIRED
-        if ($this->property('inline_errors') != 'disabled') {
-            $response['error_fields'] = $validator->messages();
-        }
-
         return $response;
     }
 
-    private function prepareJavaScript()
-    {
-        $code = false;
-
-        /* SUCCESS JS */
-        if ($this->property('js_on_success') != '') {
-            $code .= $this->property('js_on_success');
-        }
-
-        /* RECAPTCHA JS */
-        if ($this->isReCaptchaEnabled()) {
-            $code .= $this->renderPartial('@js/recaptcha.htm');
-        }
-
-        /* RESET FORM JS */
-        if ($this->property('reset_form')) {
-            $params = ['id' => '#' . $this->alias . '_forms_flash'];
-            $code .= $this->renderPartial('@js/reset-form.htm', $params);
-        }
-
-        return $code;
-    }
-
-    private function getIP()
-    {
+    private function getIP() {
         if ($this->property('anonymize_ip') == 'full') {
             return '(Not stored)';
         }
@@ -300,8 +234,7 @@ abstract class MagicForm extends ComponentBase
         return $ip;
     }
 
-    private function array_map_recursive($callback, $array)
-    {
+    private function array_map_recursive($callback, $array) {
         $func = function ($item) use (&$func, &$callback) {
             return is_array($item) ? array_map($func, $item) : call_user_func($callback, $item);
         };
@@ -309,21 +242,28 @@ abstract class MagicForm extends ComponentBase
         return array_map($func, $array);
     }
 
-    private function attachFiles(Record $record)
-    {
-        $files = post('files', null);
+    private function attachFiles(Record $record) {
+        if(empty(files('files'))) return;
+        foreach(Input::file('files') as $file) {
+            $record->files()->create(['data' => $file], post('_session_key'));
+        }
+    }
 
-        if (!$files) {
+    public static function gdprClean() {
+        $gdpr_enable = Settings::get('gdpr_enable', false);
+        $gdpr_days   = Settings::get('gdpr_days', false);
+
+        if (!$gdpr_enable) {
+            Flash::error(__('GDPR options are disabled'));
             return;
         }
 
-        foreach ($files as $file) {
-            $filepond = App::make(FilePond::class);
-            $filePath = $filepond->getPathFromServerId($file);
-
-            $record->files()->create([
-                'data' => $filePath
-            ], post('_session_key'));
+        if ($gdpr_enable && is_numeric($gdpr_days)) {
+            $days = Carbon::now()->subDays($gdpr_days);
+            $rows = Record::whereDate('created_at', '<', $days)->forceDelete();
+            return $rows;
         }
+
+        Flash::error(__("Invalid GDPR days setting value"));
     }
 }

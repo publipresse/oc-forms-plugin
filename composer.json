@@ -1,8 +1,8 @@
 {
-    "name": "publipresse/wn-forms-plugin",
-    "type": "winter-plugin",
+    "name": "publipresse/forms-plugin",
+    "type": "october-plugin",
     "description": "Create easy (and almost magic) AJAX forms",
-    "keywords": ["winter", "cms", "plugin", "forms", "magic forms"],
-    "homepage": "https://github.com/skydiver/wn-magic-forms/",
+    "keywords": ["october", "cms", "plugin", "forms", "magic forms"],
+    "homepage": "https://github.com/publipresse/oc-forms-plugin",
     "license": "MIT"
 }

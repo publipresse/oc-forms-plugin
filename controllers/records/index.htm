@@ -1,1 +1,9 @@
-<?= $this->listRender() ?>
+
+<?php
+    $group = get('group');
+    if(!empty($group)) {
+        print $this->listRender(str_replace('-', '', str_slug($group)));
+    } else {
+        print $this->listRender('default');
+    }
+?>

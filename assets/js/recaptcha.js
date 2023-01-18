@@ -1,13 +1,30 @@
-var captchas = [];
-
 var onloadCallback = function() {
     var recaptchas = document.querySelectorAll('.g-recaptcha');
-    recaptchas.forEach(function(recaptcha) {
-        captchas[recaptcha.id] = grecaptcha.render(recaptcha, recaptcha.dataset);
+
+    recaptchas.forEach(function(el) {
+        if(el.dataset.size == 'invisible') {
+            const form = el.closest('form');
+            const submit = form.querySelector('[type="submit"]');
+            grecaptcha.render(el, { 
+                callback: function(token) { 
+                    oc.request(form, 'onFormSubmit', {
+                        complete: function(data) {
+                            resetReCaptcha(form);
+                        }
+                    });
+                } 
+            });
+            submit.addEventListener('click', function(e) {
+                e.preventDefault();
+                grecaptcha.execute(el);
+            });
+        } else {
+            grecaptcha.render(el);
+        }
     });
 }
 
-function resetReCaptcha(id) {
-    var widget = captchas[id];
-    grecaptcha.reset(widget);
+function resetReCaptcha(form) {
+    var el = form.querySelector('.g-recaptcha');
+    grecaptcha.reset(el);
 }

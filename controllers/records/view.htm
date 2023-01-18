@@ -1,50 +1,51 @@
-<?php Block::put('breadcrumb') ?>
-    <ul>
-        <li><a href="<?php echo Backend::url('publipresse/forms/records') ?>"><?php echo e(trans('publipresse.forms::lang.menu.records.label')) ?></a></li>
-        <li>Record #<?php echo $record->id ?></li>
-    </ul>
-<?php Block::endPut() ?>
-
 <?= $this->makePartial('partials/view_toolbar') ?>
 
-<h2 class="text-center">Record #<?php echo $record->id ?></h2>
-
-<table class="record-table m-t-md">
-<?php foreach($record->form_data_arr as $label => $value): ?>
-    <tr>
-        <td class="record-label"><?php echo ucwords($label) ?>:</td>
-        <td class="record-value">
-        <?php if(is_array($value) || is_object($value)): ?>
-            <ul>
-                <?php echo \Publipresse\Forms\Classes\BackendHelpers::array2ul($value) ?>
-            </ul>
-        <?php else: ?>
-            <?php echo nl2br(htmlspecialchars($value, ENT_QUOTES)); ?>
-        <?php endif ?>
-        </td>
-    </tr>
-<?php endforeach ?>
-<?php if(count($record->files) > 0): ?>
-    <tr>
-        <td class="record-label">Attached Files:</td>
-        <td class="record-value files-container">
-            <ul>
-            <?php foreach($record->files as $file): ?>
-                <li>
-                    <a href="<?php echo Backend::url('publipresse/forms/records/download', [$record->id, $file->id]) ?>">
-                        <?php echo $file->file_name ?>
-                        (<?php echo $file->sizeToString() ?>)
-                    </a>
-                </li>
-            <?php endforeach ?>
-            </ul>
-        </td>
-    </tr>
-<?php endif ?>
-</table>
-
-<div class="record-metadata m-t-md m-r-md text-right">
-    <p class="m-a-0"><?php echo e(trans('publipresse.forms::lang.controllers.records.columns.group')) ?>: <?php echo $record->group ?></p>
-    <p class="m-a-0"><?php echo e(trans('publipresse.forms::lang.controllers.records.columns.ip')) ?>: <?php echo $record->ip ?></p>
-    <p class="m-a-0"><?php echo e(trans('publipresse.forms::lang.controllers.records.columns.created_at')) ?>: <?php echo $record->created_at ?></p>
+<div class="list-widget-container border-bottom-0 m-0">
+    <div class="control-table">
+        <div class="table-content">
+            <table class="table data mb-0">
+                <tbody>
+                    <tr>
+                        <th><?= __('Id') ?></th>
+                        <td><?php echo $record->id ?></td>
+                    </tr>
+                    <?php foreach($record->form_data as $label => $value): ?>
+                        <tr>
+                            <th><?php echo ucwords($label) ?></th>
+                            <td>
+                                <?php if(is_array($value) || is_object($value)): ?>
+                                    <ul>
+                                        <?php echo \Publipresse\Forms\Classes\BackendHelpers::array2ul($value) ?>
+                                    </ul>
+                                <?php else: ?>
+                                    <?php echo nl2br(htmlspecialchars($value, ENT_QUOTES)); ?>
+                                <?php endif ?>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    
+                    <?php if(count($record->files) > 0): ?>
+                        <tr>
+                            <th>Attached Files</th>
+                            <td>
+                                <?php foreach($record->files as $file): ?>
+                                    <div>
+                                        <a href="<?= $file->path ?>" target="_blank" rel="nofollow noopener">
+                                            <?php echo $file->file_name ?>
+                                            (<?php echo $file->sizeToString() ?>)
+                                        </a>
+                                    </div>
+                                <?php endforeach ?>
+                            </td>
+                        </tr>
+                    <?php endif ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="list-footer text-muted fst-italic d-flex flex-row justify-content-between fs-6">
+    <div><?= __('Group') ?>: <?php echo $record->group ?></div>
+    <div><?= __('IP address') ?>: <?php echo $record->ip ?></div>
+    <div><?= __('Created at') ?>: <?php echo $record->created_at ?></div>
 </div>
