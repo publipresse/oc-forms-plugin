@@ -10,6 +10,7 @@ var onloadCallback = function() {
                     oc.request(form, 'onFormSubmit', {
                         error: function(data) {
                             resetReCaptcha(form);
+                            this.success(data);
                         }
                     });
                 } 

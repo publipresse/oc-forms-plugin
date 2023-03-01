@@ -34,7 +34,7 @@ trait SharedProperties
             ],
             'messages_success' => [
                 'title' => __('Success'),
-                'type' => 'string',
+                'type' => 'text',
                 'group' => __('Flash messages'),
                 'default' => __('Your form was successfully submitted'),
                 'showExternalParam' => false,
@@ -42,7 +42,7 @@ trait SharedProperties
             ],
             'messages_errors' => [
                 'title' => __('Error'),
-                'type' => 'string',
+                'type' => 'text',
                 'group' => __('Flash messages'),
                 'default' => __('There were errors with your submission'),
                 'showExternalParam' => false,
