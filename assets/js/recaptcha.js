@@ -5,9 +5,10 @@ var onloadCallback = function() {
         if(el.dataset.size == 'invisible') {
             const form = el.closest('form');
             const submit = form.querySelector('[type="submit"]');
+            const alias = form.dataset.request.split('::')[0];
             grecaptcha.render(el, { 
                 callback: function(token) { 
-                    oc.request(form, 'onFormSubmit', {
+                    oc.request(form, (alias+'::onFormSubmit'), {
                         error: function(data) {
                             resetReCaptcha(form);
                             this.success(data);
