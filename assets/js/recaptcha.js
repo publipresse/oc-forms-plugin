@@ -4,7 +4,6 @@ var onloadCallback = function() {
     recaptchas.forEach(function(el) {
         if(el.dataset.size == 'invisible') {
             const form = el.closest('form');
-            const submit = form.querySelector('[type="submit"]');
             const alias = form.dataset.request.split('::')[0];
             grecaptcha.render(el, { 
                 callback: function(token) { 
@@ -16,10 +15,7 @@ var onloadCallback = function() {
                     });
                 } 
             });
-            submit.addEventListener('click', function(e) {
-                e.preventDefault();
-                grecaptcha.execute(el);
-            });
+            submitReCaptcha(form);
         } else {
             grecaptcha.render(el);
         }
@@ -29,4 +25,15 @@ var onloadCallback = function() {
 function resetReCaptcha(form) {
     var el = form.querySelector('.g-recaptcha');
     grecaptcha.reset(el);
+}
+
+function submitReCaptcha(form) {
+    const submit = form.querySelector('[type="submit"]');
+    const el = form.querySelector('.g-recaptcha');
+    console.log(submit);
+    console.log(captcha);
+    submit.addEventListener('click', function(e) {
+        e.preventDefault();
+        grecaptcha.execute(el);
+    });
 }
