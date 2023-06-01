@@ -30,8 +30,10 @@ function resetReCaptcha(form) {
 function submitReCaptcha(form) {
     const submit = form.querySelector('[type="submit"]');
     const el = form.querySelector('.g-recaptcha');
-    submit.addEventListener('click', function(e) {
-        e.preventDefault();
-        grecaptcha.execute(el);
-    });
+    if(submit) {
+        submit.addEventListener('click', function(e) {
+            e.preventDefault();
+            grecaptcha.execute(el);
+        });
+    }
 }
