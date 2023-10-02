@@ -8,9 +8,8 @@ var onloadCallback = function() {
             grecaptcha.render(el, { 
                 callback: function(token) { 
                     oc.request(form, (alias+'::onFormSubmit'), {
-                        error: function(data) {
+                        complete: function(data) {
                             resetReCaptcha(form);
-                            this.success(data);
                         }
                     });
                 } 
