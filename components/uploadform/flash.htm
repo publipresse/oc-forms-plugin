@@ -22,17 +22,15 @@
 <script>
     {% if status == 'success' %}
         var form = document.querySelector('[data-request="{{ __SELF__.alias }}::onFormSubmit"]');
-        // Reset reCaptcha
-        resetReCaptcha(form);
-
         // Reset form
         {% if __SELF__.property('reset_form') %}
             {% if __SELF__.property('uploader_enable') %}
-                pond.removeFile();
+                if (typeof pond !== "undefined") {
+                    pond.removeFile();
+                }
             {% endif %}
             form.reset();
         {% endif %}
-        
     {% endif %}
 
     // Display errors in a JS objects
