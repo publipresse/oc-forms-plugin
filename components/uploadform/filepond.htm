@@ -6,7 +6,7 @@
     <script>
         
         var pond;
-        document.addEventListener('DOMContentLoaded', function() {
+        addEventListener('page:loaded', function() {
             const inputElement = document.querySelector('[data-request="{{ __SELF__.alias }}::onFormSubmit"] input[type="file"]');
 
             FilePond.registerPlugin(FilePondPluginFileValidateType);
