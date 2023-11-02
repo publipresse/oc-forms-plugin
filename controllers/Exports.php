@@ -51,11 +51,6 @@ class Exports extends Controller
             $records->whereDate('created_at', '<=', $date_before);
         }
 
-        // FILTER DELETED
-        if (post('Record.options_deleted')) {
-            $records->withTrashed();
-        }
-
         // CREATE CSV
         $csv = CsvWriter::createFromFileObject(new SplTempFileObject());
 
@@ -64,42 +59,41 @@ class Exports extends Controller
             $csv->setDelimiter(';');
         }
 
-        // SET UTF-8 Output
-        if (post('Record.options_utf')) {
-            $csv->setOutputBOM(AbstractCsv::BOM_UTF8);
-        }
-
-        // CSV HEADERS
-        $headers = [];
-
-        // METADATA HEADERS
-        if (post('Record.options_metadata')) {
-            $meta_headers = [
-                __('Record ID'),
-                __('Group'),
-                __('IP Address'),
-                __('Created at'),
-            ];
-            $headers = array_merge($meta_headers, $headers);
-        }
-
         // ADD STORED FIELDS AS HEADER ROW IN CSV
         $filteredRecords = $records->get();
         $record = $filteredRecords->first();
-        $headers = array_merge($headers, array_keys($record->form_data_arr));
 
-        // ADD FILES HEADER
-        if (post('Record.options_files')) {
-            $headers[] = __('Attached Files');
+        if(!empty($record)) {
+            // CSV HEADERS
+            $headers = [];
+
+            // METADATA HEADERS
+            if (post('Record.options_metadata')) {
+                $meta_headers = [
+                    __('Record ID'),
+                    __('Group'),
+                    __('IP Address'),
+                    __('Created at'),
+                ];
+                $headers = array_merge($meta_headers, $headers);
+            }
+            
+            $headers = array_merge($headers, array_keys($record->form_data));
+
+            // ADD FILES HEADER
+            if (post('Record.options_files')) {
+                $headers[] = __('Attached Files');
+            }
+    
+            // ADD HEADERS
+            $csv->insertOne($headers);
         }
-
-        // ADD HEADERS
-        $csv->insertOne($headers);
 
         // WRITE CSV LINES
         foreach ($records->get() as $row) {
-            $data = (array) json_decode($row['form_data']);
 
+            $data = (array) $row['form_data'];
+            
             // IF DATA IS ARRAY CONVERT TO JSON STRING
             foreach ($data as $field => $value) {
                 if (is_array($value) || is_object($value)) {
@@ -114,7 +108,10 @@ class Exports extends Controller
 
             // ADD ATTACHED FILES
             if (post('Record.options_files') && $row->files->count() > 0) {
-                $data[] = $row->filesList();
+                $data['files'] = '';
+                foreach($row->files as $file) {
+                    $data['files'] .= $file->path."\n";
+                }
             }
 
             $csv->insertOne($data);
