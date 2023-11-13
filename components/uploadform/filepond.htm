@@ -13,7 +13,7 @@
             FilePond.registerPlugin(FilePondPluginFileValidateSize);
 
             pond = FilePond.create(inputElement, {
-                onwarning: (status, files) => { alert('{{ "The maximum number of file is"|trans }} {{ max_files }}') },
+                onwarning: (status, files) => { alert('{{ "The maximum number of file is"|_ }} {{ max_files }}') },
                 
                 maxFiles: '{{ max_files }}',
                 storeAsFile: true,
@@ -22,24 +22,24 @@
                 credits: null,
                 
                 // Labels
-                labelIdle: '{{ "Drag & Drop your files or"|trans }} <span class="filepond--label-action">{{ "Browse"|trans }}</span>',
-                labelInvalidField: '{{ "Field contains invalid files"|trans }}',
+                labelIdle: '{{ "Drag & Drop your files or"|_ }} <span class="filepond--label-action">{{ "Browse"|_ }}</span>',
+                labelInvalidField: '{{ "Field contains invalid files"|_ }}',
 
                 // File types validation
                 allowFileTypeValidation: true,
                 acceptedFileTypes: {{ allowed_filetypes|keys|json_encode|raw }},
                 fileValidateTypeLabelExpectedTypesMap: {{ allowed_filetypes|json_encode|raw }},
-                labelFileTypeNotAllowed: '{{ "File of invalid type"|trans }}',
-                fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|trans }}',
+                labelFileTypeNotAllowed: '{{ "File of invalid type"|_ }}',
+                fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|_ }}',
 
                 // File sizes validation
                 allowFileSizeValidation: true,
                 maxFileSize: '{{ max_filesize }}',
                 maxTotalFileSize: '{{ max_totalsize }}',
-                labelMaxFileSizeExceeded: '{{ "File is too large"|trans }}',
-                labelMaxFileSize: '{{ "Maximum file size is {filesize}"|trans }} ',
-                labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|trans }}',
-                labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|trans }} ',
+                labelMaxFileSizeExceeded: '{{ "File is too large"|_ }}',
+                labelMaxFileSize: '{{ "Maximum file size is {filesize}"|_ }} ',
+                labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|_ }}',
+                labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|_ }} ',
             });
         })
     </script>
