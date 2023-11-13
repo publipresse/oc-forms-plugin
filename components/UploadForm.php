@@ -5,6 +5,14 @@ namespace Publipresse\Forms\Components;
 use Publipresse\Forms\Classes\MagicForm;
 
 class UploadForm extends MagicForm {
+
+    public $uploader_enable;
+    public $uploader_label;
+    public $max_files;
+    public $max_filesize;
+    public $max_totalsize;
+    public $allowed_filetypes;
+
     public function componentDetails() {
         return [
             'name' => 'Upload form',
@@ -27,6 +35,14 @@ class UploadForm extends MagicForm {
                 'default' => false,
                 'group' => __('Upload files'),
                 'showExternalParam' => false,
+            ],
+            'uploader_label' => [
+                'title' => __('Label'),
+                'type' => 'text',
+                'default' => 'Drag & Drop your files or Browse',
+                'group' => __('Upload files'),
+                'showExternalParam' => false,
+                'validation' => ['required' => ['message' => __('Uploader label is required')]]
             ],
             'maxFiles' => [
                 'title' => __('Max number of files'),
@@ -68,10 +84,12 @@ class UploadForm extends MagicForm {
         $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-size.js', ['defer' => true]);
         $this->addJs('assets/vendor/filepond/filepond.js', ['defer' => true]);
         
-        $this->page['max_files'] = $this->property('maxFiles');
-        $this->page['max_filesize'] = $this->property('maxFileSize');
-        $this->page['max_totalsize'] = $this->property('maxTotalSize');
-        $this->page['allowed_filetypes'] = $this->property('fileTypes');
-        
+        $this->uploader_enable = $this->property('uploader_enable');
+        $this->uploader_label = $this->property('uploader_label');
+        $this->max_files = $this->property('maxFiles');
+        $this->max_files = $this->property('maxFiles');
+        $this->max_filesize = $this->property('maxFileSize');
+        $this->max_totalsize = $this->property('maxTotalSize');
+        $this->allowed_filetypes = $this->property('fileTypes');
     }
 }

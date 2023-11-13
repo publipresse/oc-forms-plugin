@@ -1,5 +1,5 @@
-{% if __SELF__.property('uploader_enable') %}
-
+{% if __SELF__.uploader_enable %}
+    
     <input name="files[]" type="file" multiple>
     
     {% put scripts %}
@@ -22,7 +22,7 @@
                 credits: null,
                 
                 // Labels
-                labelIdle: '{{ "Drag & Drop your files or"|_ }} <span class="filepond--label-action">{{ "Browse"|_ }}</span>',
+                labelIdle: '{{ __SELF__.uploader_label|_ }}',
                 labelInvalidField: '{{ "Field contains invalid files"|_ }}',
 
                 // File types validation

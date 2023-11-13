@@ -31,17 +31,21 @@ abstract class MagicForm extends ComponentBase {
     use \Publipresse\Forms\Classes\ReCaptcha;
     use \Publipresse\Forms\Classes\SharedProperties;
 
+    public $recaptcha_enabled;
+    public $recaptcha_misconfigured;
+    public $recaptcha_warn;
+
     public function onRun() {
 
-        $this->page['recaptcha_enabled'] = $this->isReCaptchaEnabled();
-        $this->page['recaptcha_misconfigured'] = $this->isReCaptchaMisconfigured();
+        $this->recaptcha_enabled = $this->isReCaptchaEnabled();
+        $this->recaptcha_misconfigured = $this->isReCaptchaMisconfigured();
 
         if ($this->isReCaptchaEnabled()) {
             $this->loadReCaptcha();
         }
 
         if ($this->isReCaptchaMisconfigured()) {
-            $this->page['recaptcha_warn'] = __('Warning: reCAPTCHA is not properly configured. Please, goto Backend > Settings > CMS > Magic Forms and configure.');
+            $this->recaptcha_warn = __('Warning: reCAPTCHA is not properly configured. Please, goto Backend > Settings > CMS > Magic Forms and configure.');
         }
     }
 
