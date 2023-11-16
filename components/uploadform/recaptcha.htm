@@ -3,6 +3,6 @@
 {% elseif (__SELF__.recaptcha_misconfigured) %}
     <div class="alert alert-warning">
         <button type="button" class="alert-close" onclick="this.parentElement.remove()">✖</button>
-        <p>{{ recaptcha_warn }}</p>
+        <p>{{ __SELF__.recaptcha_warn }}</p>
     </div>
 {% endif %}
