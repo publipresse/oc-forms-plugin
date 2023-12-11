@@ -1,6 +1,3 @@
-![](https://banners.beyondco.de/Magic%20Forms%20for%20OctoberCMS.png?theme=light&packageManager=composer+require&packageName=publipresse%2Fwn-forms-plugin&pattern=architect&style=style_1&description=Create+easy+%28and+almost+magic%29+forms&md=1&showWatermark=0&fontSize=100px&images=lightning-bolt)
-
-
 ## Why Magic Forms?
 Almost everyday we do forms for our clients, personal projects, etc
 
@@ -22,7 +19,6 @@ So, the objective was to find a way to just put the HTML elements on the page, s
 * Send mail notifications to multiple recipients
 * Auto-response email on form submit
 * reCAPTCHA validation
-* Support for Translate plugin
 * Inline errors with fields (read documentation for more info)
 * File uploads using Filepond
 
