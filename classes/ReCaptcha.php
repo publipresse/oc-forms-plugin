@@ -33,7 +33,7 @@ trait ReCaptcha {
     }
 
     private function loadReCaptcha() {
-        $this->addJs('https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit', ['async', 'defer']);
+        $this->addJs('https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit', ['defer' => true]);
         $this->addJs('assets/js/recaptcha.js');
     }
 }
