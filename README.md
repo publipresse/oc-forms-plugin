@@ -20,9 +20,5 @@ So, the objective was to find a way to just put the HTML elements on the page, s
 * Auto-response email on form submit
 * reCAPTCHA validation
 * Inline errors with fields (read documentation for more info)
-* File uploads using Filepond
-
-
-## Documentation
-Checkout our docs at:
-> https://magicforms.vercel.app/
+* (new) File uploads using Filepond
+* (new) Per form group backend listing
