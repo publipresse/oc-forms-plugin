@@ -6,3 +6,5 @@
     - Improve success and error message in component by providing a text inspector type instead of string
 1.0.2:
     - Don't load filepond scripts if file upload is disabled
+1.0.3:
+    - Fix compatibility with october CMS 3.6
