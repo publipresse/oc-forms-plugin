@@ -105,8 +105,8 @@ class Plugin extends PluginBase
 
     public function registerMailTemplates() {
         return [
-            'publipresse.forms::mail.notification' => __('Form submission notification'),
-            'publipresse.forms::mail.autoresponse' => __('Form submission auto-response'),
+            'publipresse.forms::mail.notification',
+            'publipresse.forms::mail.autoresponse',
         ];
     }
 
