@@ -122,18 +122,15 @@ class SendMail {
         $from     = isset($properties['mail_resp_from']) ? $properties['mail_resp_from'] : null;
         $subject  = isset($properties['mail_resp_subject']) ? $properties['mail_resp_subject'] : null;
 
-        if (filter_var($to, FILTER_VALIDATE_EMAIL) && filter_var($from, FILTER_VALIDATE_EMAIL)) {
-
+        if (filter_var($to, FILTER_VALIDATE_EMAIL)) {
             // CUSTOM TEMPLATE
+
             $template = isset($properties['mail_resp_template']) && $properties['mail_resp_template'] != '' && MailTemplate::findOrMakeTemplate($properties['mail_resp_template']) ? $properties['mail_resp_template'] : 'publipresse.forms::mail.autoresponse';
 
-            Mail::sendTo($to, $template, [
-                    'id'   => $record->id,
-                    'data' => $post,
-                    'ip'   => $record->ip,
-                    'date' => $record->created_at
-                ], function ($message) use ($from, $subject) {
-                    $message->from($from);
+            Mail::sendTo($to, $template, $data, function ($message) use ($from, $subject) {
+                    if(isset($from) && filter_var($from, FILTER_VALIDATE_EMAIL)) {
+                        $message->from($from);
+                    }
                     if (isset($subject)) {
                         $message->subject($subject);
                     }
