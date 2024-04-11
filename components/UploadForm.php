@@ -6,13 +6,6 @@ use Publipresse\Forms\Classes\MagicForm;
 
 class UploadForm extends MagicForm {
 
-    public $uploader_enable;
-    public $uploader_label;
-    public $max_files;
-    public $max_filesize;
-    public $max_totalsize;
-    public $allowed_filetypes;
-
     public function componentDetails() {
         return [
             'name' => 'Upload form',
@@ -78,20 +71,12 @@ class UploadForm extends MagicForm {
     
     public function onRun() {
         parent::onRun();
-        
-        $this->uploader_enable = $this->property('uploader_enable');
-        if ($this->uploader_enable) {
+        if ($this->property('uploader_enable')) {
             $this->addCss('assets/vendor/filepond/filepond.css');
             $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-type.js', ['defer' => true]);
             $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-size.js', ['defer' => true]);
             $this->addJs('assets/vendor/filepond/filepond.js', ['defer' => true]);
-            
-            $this->uploader_label = $this->property('uploader_label');
-            $this->max_files = $this->property('maxFiles');
-            $this->max_files = $this->property('maxFiles');
-            $this->max_filesize = $this->property('maxFileSize');
-            $this->max_totalsize = $this->property('maxTotalSize');
-            $this->allowed_filetypes = $this->property('fileTypes');
         }
     }
+
 }

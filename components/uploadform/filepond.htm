@@ -1,48 +1,70 @@
-{% if __SELF__.uploader_enable %}
-    
+{% set alias = __SELF__.alias %}
+{% set uploader_enable = __SELF__.property('uploader_enable') %}
+{% set uploader_label = __SELF__.property('uploader_label') %}
+{% set max_files = __SELF__.property('maxFiles') %}
+{% set max_filesize = __SELF__.property('maxFileSize') %}
+{% set max_totalsize = __SELF__.property('maxTotalSize') %}
+{% set allowed_filetypes = __SELF__.property('fileTypes') %}
+
+{% if uploader_enable %}
     <input name="files[]" type="file" multiple>
     
-    {% put scripts %}
-    <script>
-        
-        var pond;
-        addEventListener('page:loaded', function() {
-            const inputElement = document.querySelector('[data-request="{{ __SELF__.alias }}::onFormSubmit"] input[type="file"]');
-
-            FilePond.registerPlugin(FilePondPluginFileValidateType);
-            FilePond.registerPlugin(FilePondPluginFileValidateSize);
-
-            pond = FilePond.create(inputElement, {
-                onwarning: (status, files) => { alert('{{ "The maximum number of file is"|_ }} {{ __SELF__.max_files }}') },
-                
-                maxFiles: '{{ __SELF__.max_files }}',
-                storeAsFile: true,
-                allowReorder: true,
-                //checkValidity: true,
-                credits: null,
-                
-                // Labels
-                labelIdle: '{{ __SELF__.uploader_label|_ }}',
-                labelInvalidField: '{{ "Field contains invalid files"|_ }}',
-
-                // File types validation
-                allowFileTypeValidation: true,
-                acceptedFileTypes: {{ __SELF__.allowed_filetypes|keys|json_encode|raw }},
-                fileValidateTypeLabelExpectedTypesMap: {{ __SELF__.allowed_filetypes|json_encode|raw }},
-                labelFileTypeNotAllowed: '{{ "File of invalid type"|_ }}',
-                fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|_ }}',
-
-                // File sizes validation
-                allowFileSizeValidation: true,
-                maxFileSize: '{{ __SELF__.max_filesize }}',
-                maxTotalFileSize: '{{ __SELF__.max_totalsize }}',
-                labelMaxFileSizeExceeded: '{{ "File is too large"|_ }}',
-                labelMaxFileSize: '{{ "Maximum file size is {filesize}"|_ }} ',
-                labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|_ }}',
-                labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|_ }} ',
-            });
-        })
-    </script>
-    {% endput %}
+    {% if not this.request.ajax %}
+        {% put scripts %}
+            <script>
+                var pond;
+                addEventListener('page:loaded', function() {
+                    initFilePond()
+                });
+                </script>
+        {% endput %}
+        {% else %}
+            <script>
+                var pond;
+                addEventListener('ajax:update', function() {
+                    initFilePond();
+                });
+            </script>
+    {% endif %}
     
+        <script>
+            function initFilePond() {
+                const inputElement = document.querySelector('[data-request="{{ alias }}::onFormSubmit"] input[type="file"]');
+
+                FilePond.registerPlugin(FilePondPluginFileValidateType);
+                FilePond.registerPlugin(FilePondPluginFileValidateSize);
+
+                pond = FilePond.create(inputElement, {
+                    onwarning: (status, files) => { alert('{{ "The maximum number of file is"|_ }} {{ max_files }}') },
+                    
+                    maxFiles: '{{ max_files }}',
+                    storeAsFile: true,
+                    allowReorder: true,
+                    //checkValidity: true,
+                    credits: null,
+                    
+                    // Labels
+                    labelIdle: '{{ uploader_label|_ }}',
+                    labelInvalidField: '{{ "Field contains invalid files"|_ }}',
+
+                    // File types validation
+                    allowFileTypeValidation: true,
+                    acceptedFileTypes: {{ allowed_filetypes|keys|json_encode|raw }},
+                    fileValidateTypeLabelExpectedTypesMap: {{ allowed_filetypes|json_encode|raw }},
+                    labelFileTypeNotAllowed: '{{ "File of invalid type"|_ }}',
+                    fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|_ }}',
+
+                    // File sizes validation
+                    allowFileSizeValidation: true,
+                    maxFileSize: '{{ max_filesize }}',
+                    maxTotalFileSize: '{{ max_totalsize }}',
+                    labelMaxFileSizeExceeded: '{{ "File is too large"|_ }}',
+                    labelMaxFileSize: '{{ "Maximum file size is {filesize}"|_ }} ',
+                    labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|_ }}',
+                    labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|_ }} ',
+                });
+            }
+
+        </script>
+
 {% endif %}

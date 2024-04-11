@@ -10,3 +10,6 @@
     - Fix compatibility with october CMS 3.6
 1.0.4:
     - Sender email not mandatory anymore in autoresponse notification. If not specied, global email configuration will be used.
+2.0.0:
+    - Make it possible to inject filepond partial using ajax.
+    - There are breaking changes in filepond partial to make it possible, you probably have to update your partial if you overrided it in your theme.
