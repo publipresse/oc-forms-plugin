@@ -13,3 +13,5 @@
 2.0.0:
     - Make it possible to inject filepond partial using ajax.
     - There are breaking changes in filepond partial to make it possible, you probably have to update your partial if you overrided it in your theme.
+2.0.1:
+    - Let filepond also work without turbo
