@@ -13,22 +13,33 @@
         {% put scripts %}
             <script>
                 var pond;
+                var initialized;
                 addEventListener('page:loaded', function() {
-                    initFilePond()
+                    initFilePond();
+                    initialized = false;
+                });
+                window.addEventListener('DOMContentLoaded', (event) => {
+                    initFilePond();
+                    initialized = true;
                 });
                 </script>
         {% endput %}
         {% else %}
             <script>
                 var pond;
+                var initialized;
                 addEventListener('ajax:update', function() {
                     initFilePond();
+                    initialized = false;
                 });
             </script>
     {% endif %}
     
         <script>
             function initFilePond() {
+                if(initialized){
+                    return;
+                }
                 const inputElement = document.querySelector('[data-request="{{ alias }}::onFormSubmit"] input[type="file"]');
 
                 FilePond.registerPlugin(FilePondPluginFileValidateType);
