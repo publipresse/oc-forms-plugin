@@ -192,7 +192,7 @@ abstract class MagicForm extends ComponentBase {
         Event::fire('publipresse.forms.afterSaveRecord', [&$post, $this, $record]);
 
         // CHECK FOR REDIRECT
-        if ($this->property('session')) {
+        if ($this->property('save_in_session')) {
             Session::put($this->alias.'-form', $post);
         }
 
