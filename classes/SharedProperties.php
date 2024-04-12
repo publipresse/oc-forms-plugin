@@ -255,6 +255,19 @@ trait SharedProperties
                 'group' => __('Advanced settings'),
                 'showExternalParam' => false
             ],
+            'save_in_session' => [
+                'title' => __('Save submitted datas in session'),
+                'description' => __('If checked, data will be saved in a $_SESSION["{{ alias }}-form"]'),
+                'type' => 'checkbox',
+                'group' => __('Advanced settings'),
+                'showExternalParam' => false
+            ],
+            'skip_database' => [
+                'title' => __('Skip database'),
+                'type' => 'checkbox',
+                'group' => __('Advanced settings'),
+                'showExternalParam' => false
+            ],
         ];
     }
 

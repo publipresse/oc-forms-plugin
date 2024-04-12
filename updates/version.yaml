@@ -15,3 +15,5 @@
     - There are breaking changes in filepond partial to make it possible, you probably have to update your partial if you overrided it in your theme.
 2.0.1:
     - Let filepond also work without turbo
+2.0.2:
+    - Add an advanced option in the component to save submitted data in session, session name will have the following pattern "{{ component.alias }}-form"
