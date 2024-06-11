@@ -72,10 +72,10 @@ class UploadForm extends MagicForm {
     public function onRun() {
         parent::onRun();
         if ($this->property('uploader_enable')) {
-            $this->addCss('assets/vendor/filepond/filepond.css');
-            $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-type.js', ['defer' => true]);
-            $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-size.js', ['defer' => true]);
-            $this->addJs('assets/vendor/filepond/filepond.js', ['defer' => true]);
+            $this->addCss('assets/vendor/filepond/filepond.min.css');
+            $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-type.min.js', ['defer' => true]);
+            $this->addJs('assets/vendor/filepond/filepond-plugin-file-validate-size.min.js', ['defer' => true]);
+            $this->addJs('assets/vendor/filepond/filepond.min.js', ['defer' => true]);
         }
     }
 
