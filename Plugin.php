@@ -26,6 +26,11 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function register()
+    {
+        $this->registerConsoleCommand('import.martinforms', \Publipresse\Forms\Console\ImportMartinForms::class);
+    }
+
     public function registerNavigation() {
 
         // Add menu item for all records
@@ -49,7 +54,7 @@ class Plugin extends PluginBase
                 ]
             ]
         ];
-        
+
         // Add menu item for each groups
         $groups = Record::all()->pluck('group')->unique();
         foreach($groups as $group) {
@@ -115,5 +120,5 @@ class Plugin extends PluginBase
             MagicForm::gdprClean();
         })->daily();
     }
-    
+
 }
