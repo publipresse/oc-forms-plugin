@@ -30,7 +30,7 @@ class ImportMartinForms extends Command
 
             $newRecord = new Record();
             $newRecord->group = $record->group;
-            $newRecord->form_data = $record->form_data;
+            $newRecord->form_data = json_decode($record->form_data, true);
             $newRecord->ip = $record->ip;
             $newRecord->unread = $record->unread;
             $newRecord->created_at = $record->created_at;
