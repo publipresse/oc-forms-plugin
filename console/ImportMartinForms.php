@@ -14,6 +14,10 @@ class ImportMartinForms extends Command
 
     public function handle()
     {
+        if (!$this->confirm('Are you sure you want to migrate records from Martin.Forms to Publipresse.Forms?')) {
+            return;
+        }
+
         $records = Db::table('martin_forms_records')->get();
         $count = $records->count();
 
