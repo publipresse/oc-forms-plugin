@@ -19,3 +19,5 @@
     - Add an advanced option in the component to save submitted data in session, session name will have the following pattern "{{ component.alias }}-form"
 2.0.3:
     - Fix variable typo of 2.0.2 update
+2.0.4:
+    - Add migration console commande from Martin.forms, thanks to @tomaszstrojny
