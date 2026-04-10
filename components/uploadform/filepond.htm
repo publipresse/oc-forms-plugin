@@ -7,75 +7,43 @@
 {% set allowed_filetypes = __SELF__.property('fileTypes') %}
 
 {% if uploader_enable %}
-    <input name="files[]" type="file" multiple>
-    
-    {% if not this.request.ajax %}
-        {% put scripts %}
-            <script>
-                var pond;
-                var initialized;
-                addEventListener('page:loaded', function() {
-                    initFilePond();
-                    initialized = false;
-                });
-                window.addEventListener('DOMContentLoaded', (event) => {
-                    initFilePond();
-                    initialized = true;
-                });
-                </script>
-        {% endput %}
-        {% else %}
-            <script>
-                var pond;
-                var initialized;
-                addEventListener('ajax:update', function() {
-                    initFilePond();
-                    initialized = false;
-                });
-            </script>
-    {% endif %}
-    
-        <script>
-            function initFilePond() {
-                if(initialized){
-                    return;
+    <file-pond
+        max-files="{{ max_files }}"
+        max-size="{{ max_filesize }}"
+        max-list-size="{{ max_totalsize }}"
+        accept="{{ allowed_filetypes|keys|join(',') }}"
+        noattribution
+    >
+        <input type="file" name="files[]" multiple />
+    </file-pond>
+
+    {% put scripts once %}
+        <script type="importmap">
+            {
+                "imports": {
+                    "filepond": "https://unpkg.com/filepond@5.0.0-beta.23/cdn/index.js",
+                    "filepond/": "https://unpkg.com/filepond@5.0.0-beta.23/cdn/"
                 }
-                const inputElement = document.querySelector('[data-request="{{ alias }}::onFormSubmit"] input[type="file"]');
-
-                FilePond.registerPlugin(FilePondPluginFileValidateType);
-                FilePond.registerPlugin(FilePondPluginFileValidateSize);
-
-                pond = FilePond.create(inputElement, {
-                    onwarning: (status, files) => { alert('{{ "The maximum number of file is"|_ }} {{ max_files }}') },
-                    
-                    maxFiles: '{{ max_files }}',
-                    storeAsFile: true,
-                    allowReorder: true,
-                    //checkValidity: true,
-                    credits: null,
-                    
-                    // Labels
-                    labelIdle: '{{ uploader_label|_ }}',
-                    labelInvalidField: '{{ "Field contains invalid files"|_ }}',
-
-                    // File types validation
-                    allowFileTypeValidation: true,
-                    acceptedFileTypes: {{ allowed_filetypes|keys|json_encode|raw }},
-                    fileValidateTypeLabelExpectedTypesMap: {{ allowed_filetypes|json_encode|raw }},
-                    labelFileTypeNotAllowed: '{{ "File of invalid type"|_ }}',
-                    fileValidateTypeLabelExpectedTypes: '{{ "Expects {allButLastType} or {lastType}"|_ }}',
-
-                    // File sizes validation
-                    allowFileSizeValidation: true,
-                    maxFileSize: '{{ max_filesize }}',
-                    maxTotalFileSize: '{{ max_totalsize }}',
-                    labelMaxFileSizeExceeded: '{{ "File is too large"|_ }}',
-                    labelMaxFileSize: '{{ "Maximum file size is {filesize}"|_ }} ',
-                    labelMaxTotalFileSizeExceeded: '{{ "Maximum total size exceeded"|_ }}',
-                    labelMaxTotalFileSize: '{{ "Maximum total file size is {filesize}"|_ }} ',
-                });
             }
-
         </script>
 
+        <script type="module">
+            import { defineFilePond } from 'filepond';
+            import { locale } from 'filepond/locales/en-gb.js';
+            import { ListCountValidator } from 'filepond/extensions/list-count-validator.js';
+            import { FileSizeValidator } from 'filepond/extensions/file-size-validator.js';
+            import { ListSizeValidator } from 'filepond/extensions/list-size-validator.js';
+            import { FileMimeTypeValidator } from 'filepond/extensions/file-mime-type-validator.js';
+
+            defineFilePond({
+                locale,
+                extensions: [
+                    ListCountValidator,
+                    FileSizeValidator,
+                    ListSizeValidator,
+                    FileMimeTypeValidator,
+                ],
+            });
+        </script>
+    {% endput %}
 {% endif %}
