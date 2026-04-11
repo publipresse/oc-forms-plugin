@@ -29,13 +29,13 @@ class UploadForm extends MagicForm {
                 'group' => __('Upload files'),
                 'showExternalParam' => false,
             ],
-            'uploader_label' => [
-                'title' => __('Label'),
+            'uploader_locale' => [
+                'title' => __('Locale'),
                 'type' => 'text',
-                'default' => 'Drag & Drop your files or Browse',
+                'default' => 'en-gb',
                 'group' => __('Upload files'),
                 'showExternalParam' => false,
-                'validation' => ['required' => ['message' => __('Uploader label is required')]]
+                'validation' => ['required' => ['message' => __('Uploader locale is required')]]
             ],
             'maxFiles' => [
                 'title' => __('Max number of files'),

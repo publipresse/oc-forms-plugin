@@ -5,34 +5,28 @@ var onloadCallback = function() {
         if(el.dataset.size == 'invisible') {
             const form = el.closest('form');
             const alias = form.dataset.request.split('::')[0];
-            grecaptcha.render(el, { 
-                callback: function(token) { 
+            const widgetId = grecaptcha.render(el, {
+                callback: function(token) {
                     oc.request(form, (alias+'::onFormSubmit'), {
                         complete: function(data) {
-                            resetReCaptcha(form);
+                            grecaptcha.reset(widgetId);
                         }
                     });
-                } 
+                }
             });
-            submitReCaptcha(form);
+            submitReCaptcha(form, widgetId);
         } else {
             grecaptcha.render(el);
         }
     });
 }
 
-function resetReCaptcha(form) {
-    var el = form.querySelector('.g-recaptcha');
-    grecaptcha.reset(el);
-}
-
-function submitReCaptcha(form) {
+function submitReCaptcha(form, widgetId) {
     const submit = form.querySelector('[type="submit"]');
-    const el = form.querySelector('.g-recaptcha');
     if(submit) {
         submit.addEventListener('click', function(e) {
             e.preventDefault();
-            grecaptcha.execute(el);
+            grecaptcha.execute(widgetId);
         });
     }
 }

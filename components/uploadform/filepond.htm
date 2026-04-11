@@ -1,6 +1,6 @@
 {% set alias = __SELF__.alias %}
 {% set uploader_enable = __SELF__.property('uploader_enable') %}
-{% set uploader_label = __SELF__.property('uploader_label') %}
+{% set uploader_locale = __SELF__.property('uploader_locale') %}
 {% set max_files = __SELF__.property('maxFiles') %}
 {% set max_filesize = __SELF__.property('maxFileSize') %}
 {% set max_totalsize = __SELF__.property('maxTotalSize') %}
@@ -13,6 +13,7 @@
         max-list-size="{{ max_totalsize }}"
         accept="{{ allowed_filetypes|keys|join(',') }}"
         noattribution
+        class="validator"
     >
         <input type="file" name="files[]" multiple />
     </file-pond>
@@ -29,7 +30,7 @@
 
         <script type="module">
             import { defineFilePond } from 'filepond';
-            import { locale } from 'filepond/locales/en-gb.js';
+            import { locale } from 'filepond/locales/{{ uploader_locale }}.js';
             import { ListCountValidator } from 'filepond/extensions/list-count-validator.js';
             import { FileSizeValidator } from 'filepond/extensions/file-size-validator.js';
             import { ListSizeValidator } from 'filepond/extensions/list-size-validator.js';
