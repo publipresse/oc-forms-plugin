@@ -6,6 +6,7 @@ use Lang;
 use Validator;
 
 use Publipresse\Forms\Classes\BackendHelpers;
+use Publipresse\Forms\Classes\MagicForm;
 use Publipresse\Forms\Models\Settings;
 use Publipresse\Forms\Models\Record;
 
